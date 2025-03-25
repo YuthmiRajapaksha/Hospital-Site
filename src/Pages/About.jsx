@@ -2,7 +2,7 @@ import React from "react";
 
 const About = () => {
   return (
-    <div style={{ padding: "20px", textAlign: "center" }}>
+    <div style={{ padding: "20px", textAlign: "center", fontFamily: 'Poppins',fontSize:"18px" }}>
       {/* Centered Heading */}
       <h1>About Us</h1>
 

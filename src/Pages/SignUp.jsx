@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { 
   Box, Stepper, Step, StepLabel, Button, Typography, 
-  TextField, Select, MenuItem, Paper ,Radio, RadioGroup, FormControlLabel
+  TextField, Select, MenuItem, Paper ,Radio, RadioGroup, FormControlLabel,InputAdornment, IconButton
 } from "@mui/material";
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Swal from "sweetalert2";  // Import SweetAlert2
 import { useNavigate } from "react-router-dom";  // Import useNavigate
 
@@ -27,6 +28,20 @@ const [lastNameError, setLastNameError] = useState("");
 const [nicError, setNicError] = useState("");
 const [emailError, setEmailError] = useState("");
 const [passwordError, setPasswordError] = useState("");
+const [confirmPassword, setConfirmPassword] = useState('');
+const [confirmPasswordError, setConfirmPasswordError] = useState('');
+const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for toggling confirm password visibility
+
+ // Function to toggle password visibility
+ const togglePasswordVisibility = () => {
+  setShowPassword(!showPassword);
+};
+
+// Function to toggle confirm password visibility
+const toggleConfirmPasswordVisibility = () => {
+  setShowConfirmPassword(!showConfirmPassword);
+};
 
 const handleRegister = () => {
   let isValid = true;
@@ -64,6 +79,13 @@ const handleRegister = () => {
     isValid = false;
   } else {
     setPasswordError("");
+  }
+  // Validation for Confirm Password
+  if (password !== confirmPassword) {
+    setConfirmPasswordError("Passwords do not match");
+    isValid = false;
+  } else {
+    setConfirmPasswordError("");
   }
 
   if (isValid) {
@@ -141,6 +163,8 @@ const handleRegister = () => {
 //     alert(`User Registered!\nName: ${fullName}\nEmail: ${email}`);
 //   };
 
+
+
   return (
    
     <Box 
@@ -204,7 +228,7 @@ const handleRegister = () => {
         {/* Step 1: Contact Info */}
         {activeStep === 0 && (
           <Box mt={4} textAlign="center">
-            <Typography variant="h4" fontWeight="bold" sx={{ fontFamily: "Monospace" }}>SIGN UP</Typography>
+            <Typography variant="h4" fontWeight="bold" sx={{ fontFamily: "Poppins" }}>SIGN UP</Typography>
             <Typography variant="body1" mt={2}>Contact Info</Typography>
 
             <Select 
@@ -333,11 +357,12 @@ const handleRegister = () => {
             <Typography variant="h5" fontWeight="bold">SIGN UP</Typography>
             <Typography variant="body1" mt={2}>Personal Info</Typography>
 
+            <Box display="flex" gap={2} mt={2}>
             <Select 
               fullWidth 
               value={title} 
               onChange={(e) => setTitle(e.target.value)} 
-              sx={{ mt: 2 }}
+              sx={{  flex: 1}}
               displayEmpty
             >
               <MenuItem value="" disabled>Title</MenuItem>
@@ -346,7 +371,7 @@ const handleRegister = () => {
               <MenuItem value="Dr.">Dr.</MenuItem>
             </Select>
 
-            <Box display="flex" gap={2} mt={2}>
+            {/* <Box display="flex" gap={2} mt={2}> */}
               <TextField 
                 fullWidth 
                 label="First Name" 
@@ -358,6 +383,7 @@ const handleRegister = () => {
                 }} 
                 error={!!firstNameError}
                 helperText={firstNameError}
+                sx={{ flex: 2 }}
               />
               <TextField 
                 fullWidth 
@@ -370,6 +396,7 @@ const handleRegister = () => {
                 }} 
                 error={!!lastNameError}
                 helperText={lastNameError}
+                sx={{ flex: 2 }}
               />
             </Box>
 
@@ -411,21 +438,58 @@ const handleRegister = () => {
             
               sx={{ mt: 2 }}
             />
-
+            
+            <Box display="flex" gap={2} mt={2}>
             <TextField 
               fullWidth 
               label="Password" 
-              type="password" 
+              type={showPassword ? "text" : "password"} 
               variant="outlined" 
               value={password} 
               onChange={(e) => {
                 setPassword(e.target.value);
                 setPasswordError("");  // Clear error on input
               }} 
+              
               error={!!passwordError}
               helperText={passwordError}
-              sx={{ mt: 2 }}
+              sx={{ flex: 2 }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={togglePasswordVisibility} edge="end">
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              
             />
+        <TextField 
+          fullWidth 
+          label="Confirm Password" 
+          type={showConfirmPassword ? "text" : "password"}
+          variant="outlined" 
+          value={confirmPassword} 
+          onChange={(e) => {
+            setConfirmPassword(e.target.value);
+            setConfirmPasswordError("");  // Clear error on input
+          }} 
+          error={!!confirmPasswordError}
+          helperText={confirmPasswordError}
+          sx={{ flex: 2 }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={toggleConfirmPasswordVisibility} edge="end">
+                  {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+            
 
             <Box display="flex" justifyContent="space-between" mt={3}>
               <Button 

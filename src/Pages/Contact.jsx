@@ -2,7 +2,7 @@ import React from "react";
 
 const Contact = () => {
     return (
-        <div style={{ padding: "20px", textAlign: "center" }}>
+        <div style={{ padding: "20px", textAlign: "center", fontFamily: 'Poppins', fontSize:"18px"}}>
           {/* Centered Heading */}
           <h1>Contact Us</h1>
     

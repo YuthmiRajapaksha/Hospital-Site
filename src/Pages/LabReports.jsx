@@ -24,7 +24,7 @@ const LabReports = () => {
         <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
           <Paper sx={{ padding: 4, mt: -20, maxWidth: 400, width: "100%", boxShadow: 10 }}>
     <Box textAlign="center" mt={3}>
-      <Typography variant="h4" fontWeight="bold" sx={{ fontFamily: "Monospace" }}>LAB REPORTS</Typography>
+      <Typography variant="h4" fontWeight="bold" sx={{ fontFamily: "Poppins" }}>LAB REPORTS</Typography>
       <Typography variant="h6" mt={4} sx={{ fontFamily: "Poppins" }}>Verify your lab report status here</Typography>
 
       {/* Reference Number Input */}
