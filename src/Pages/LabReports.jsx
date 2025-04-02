@@ -102,7 +102,7 @@ const LabReports = () => {
           setReportAvailable(true);
         } else {
           setReportAvailable(false);
-          setErrorMessage("The lab report is available but not ready for download.");
+          setErrorMessage("The lab report is available collect your lab report.");
         }
       } else {
         setReportAvailable(false);
