@@ -102,7 +102,7 @@ const LabReports = () => {
           setReportAvailable(true);
         } else {
           setReportAvailable(false);
-          setErrorMessage("The lab report is available collect your lab report.");
+          setErrorMessage("The lab report is available. Collect your lab report.");
         }
       } else {
         setReportAvailable(false);
@@ -143,7 +143,11 @@ const LabReports = () => {
           <Box mt={6}>
             <Button 
               variant="contained"  
-              sx={{ backgroundColor: "#2B909B", width: "120px" }}  
+              sx={{ backgroundColor: "#2B909B", width: "120px",
+                '&:hover': {
+              backgroundColor: '#4da6a9',
+            },
+               }}  
               onClick={handleCheckReport} 
               disabled={!isFormValid || loading}
             >
@@ -153,7 +157,7 @@ const LabReports = () => {
 
           {/* Popup Dialog */}
           <Dialog open={open} onClose={() => setOpen(false)}>
-            <DialogTitle>Lab Report Status</DialogTitle>
+            <DialogTitle sx={{ fontFamily: 'Poppins', fontWeight: 'bold' }}>Lab Report Status</DialogTitle>
             <DialogContent>
               {errorMessage ? (
                 <Typography>{errorMessage}</Typography>
