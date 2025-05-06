@@ -81,42 +81,46 @@ import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, T
 const LabReports = () => {
   const [open, setOpen] = useState(false);
   const [referenceNumber, setReferenceNumber] = useState("");
-  const [reportAvailable, setReportAvailable] = useState(false);
-  const [loading, setLoading] = useState(false);  // For loading state when checking the report
-  const [errorMessage, setErrorMessage] = useState(""); // To handle error messages
+  const [loading, setLoading] = useState(false);
+  const [reportStatusMessage, setReportStatusMessage] = useState("");
 
   const isFormValid = referenceNumber.trim() !== "";
 
-  // Simulate checking the report with an API
   const handleCheckReport = async () => {
-    setLoading(true); // Set loading state
-    setErrorMessage(""); // Clear previous errors
+    setLoading(true);
+    setReportStatusMessage("");
+
     try {
-      // Replace the dummy check with an API call
       const response = await fetch(`http://localhost:3000/api/lab-reports/check/${referenceNumber.trim()}`);
       const data = await response.json();
 
       if (data && data.status) {
-        // If the report is available, check if it is ready for download or in another status
-        if (data.report_status === "ready") {
-          setReportAvailable(true);
-        } else {
-          setReportAvailable(false);
-          setErrorMessage("The lab report is available. Collect your lab report.");
+        // Match known statuses to a message
+        let message = "";
+        switch (data.status) {
+          case "Completed":
+            message = "✅ Status: Completed";
+            break;
+          case "In Progress":
+            message = "⏳ Status: In Progress";
+            break;
+          case "Pending":
+            message = "🕐 Status: Pending";
+            break;
+          default:
+            message = `ℹ️ Status: ${data.status}`;
         }
+        setReportStatusMessage(message);
       } else {
-        setReportAvailable(false);
-        setErrorMessage("❌ No lab report found for this reference number.");
+        setReportStatusMessage("❌ No lab report found for this reference number.");
       }
     } catch (error) {
       console.error("Error fetching report:", error);
-      setReportAvailable(false); // Set false if there is an error
-      setErrorMessage("❌ There was an error fetching the report.");
+      setReportStatusMessage("❌ There was an error fetching the report.");
     } finally {
-      setLoading(false); // End loading state
+      setLoading(false);
+      setOpen(true);
     }
-
-    setOpen(true); // Open the popup
   };
 
   return (
@@ -159,13 +163,15 @@ const LabReports = () => {
           <Dialog open={open} onClose={() => setOpen(false)}>
             <DialogTitle sx={{ fontFamily: 'Poppins', fontWeight: 'bold' }}>Lab Report Status</DialogTitle>
             <DialogContent>
-              {errorMessage ? (
+              {/* {errorMessage ? (
                 <Typography>{errorMessage}</Typography>
               ) : (
                 <Typography>
                   {reportAvailable ? "✅ Your lab report is ready for download!" : "❌ No lab report found for this reference number."}
                 </Typography>
-              )}
+              )} */}
+              <Typography>{reportStatusMessage}</Typography>
+
             </DialogContent>
             <DialogActions>
               <Button onClick={() => setOpen(false)} color="primary">

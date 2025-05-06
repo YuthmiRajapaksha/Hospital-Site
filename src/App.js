@@ -12,6 +12,9 @@ import Bookings from './Pages/Bookings';
 import LabReports from './Pages/LabReports';
 import About from './Pages/About';
 import Contact from './Pages/Contact';
+import DoctorResults from "./Pages/ChannelDoctor/DoctorResults";
+import SearchResults from './components/SearchResults';
+import HospitalDashboards from './Pages/ChannelDoctor/HospitalDashboards';
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../src/theme"; // Import the theme
 
@@ -88,6 +91,8 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/channel-doctor" element={<HospitalDashboards />} />
+              <Route path="/results" element={<SearchResults />} />
             </Routes>
           </div>
           <Footer />
