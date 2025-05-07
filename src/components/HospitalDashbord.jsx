@@ -128,6 +128,7 @@ import {
   Autocomplete,
   Button,
 } from "@mui/material";
+// import { createFilterOptions } from '@mui/material/Autocomplete';
 import { useNavigate } from "react-router-dom";
 
 const HospitalDashboard = () => {
@@ -138,6 +139,12 @@ const HospitalDashboard = () => {
   const [hospital, setHospital] = useState("");
   const [date, setDate] = useState("");
   const navigate = useNavigate();
+
+  // Custom filter: only show options starting with the input
+// const filterOptions = createFilterOptions({
+//   matchFrom: "start",
+//   stringify: (option) => option,
+// });
 
   useEffect(() => {
     const fetchDoctorsAndSpecializations = async () => {
@@ -216,6 +223,13 @@ const HospitalDashboard = () => {
                 renderInput={(params) => (
                   <TextField {...params} label="Doctor Name" fullWidth />
                 )}
+                // filterOptions={filterOptions}
+                ListboxProps={{
+                  style: {
+                    maxHeight: '100px', // Limit height
+                    overflow: 'auto',   // Enable scroll
+                  },
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
@@ -227,6 +241,13 @@ const HospitalDashboard = () => {
                 renderInput={(params) => (
                   <TextField {...params} label="Specialization" fullWidth />
                 )}
+                // filterOptions={filterOptions}
+                ListboxProps={{
+                  style: {
+                    maxHeight: "100px",
+                    overflow: "auto",
+                  },
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={3}>

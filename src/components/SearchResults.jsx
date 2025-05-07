@@ -62,12 +62,23 @@ const SearchResults = () => {
                   boxShadow: "0 8px 30px rgba(0, 0, 0, 0.15)",
                 },
                }}>
-                <CardMedia
+                {/* <CardMedia
                   component="img"
                   height="250"
                   image={doc.image || "/img/doc.png"}
                   alt={doc.name}
-                />
+                /> */}
+                <CardMedia
+  component="img"
+  height="250"
+  image={
+    doc.photo
+      ? `http://localhost:3000/${doc.photo}`
+      : "/img/doc.png"
+  }
+  alt={doc.name}
+/>
+
                 <CardContent sx={{ backgroundColor: '#CFEFF1' }}>
                   <Typography gutterBottom variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
                     Dr. {doc.name}
