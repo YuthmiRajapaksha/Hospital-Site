@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Container,
   Grid,
@@ -8,11 +8,14 @@ import {
   Typography,
   CardMedia,
   Paper,
+  Button,
 } from "@mui/material";
 
 const SearchResults = () => {
   const [results, setResults] = useState([]);
   const location = useLocation();
+  const navigate = useNavigate();
+
 
   const params = new URLSearchParams(location.search);
   const doctor = params.get("doctor");
@@ -57,8 +60,8 @@ const SearchResults = () => {
             <Grid item xs={12} sm={6} md={3} key={index}>
               <Card sx={{ maxWidth: 300 ,  boxShadow: 8 ,
                 "&:hover": {
-                  //  transform: "scale(1.03)",
-                  transform: "scale(1.1)",
+                   transform: "scale(1.03)",
+                  // transform: "scale(1.1)",
                   boxShadow: "0 8px 30px rgba(0, 0, 0, 0.15)",
                 },
                }}>
@@ -69,15 +72,15 @@ const SearchResults = () => {
                   alt={doc.name}
                 /> */}
                 <CardMedia
-  component="img"
-  height="250"
-  image={
-    doc.photo
-      ? `http://localhost:3000/${doc.photo}`
-      : "/img/doc.png"
-  }
-  alt={doc.name}
-/>
+                   component="img"
+                   height="250"
+                   image={
+                   doc.photo
+                   ? `http://localhost:3000/${doc.photo}`
+                   : "/img/doc.png"
+                  }
+                   alt={doc.name}
+                />
 
                 <CardContent sx={{ backgroundColor: '#CFEFF1' }}>
                   <Typography gutterBottom variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
@@ -89,6 +92,15 @@ const SearchResults = () => {
                   <Typography variant="body2" color="text.secondary">
                     Hospital: {doc.hospital}
                   </Typography>
+
+                  <Button
+                     variant="contained"
+                     fullWidth
+                     sx={{ mt: 2, backgroundColor: "#2B909B", "&:hover": { backgroundColor: "#257E85" } }}
+                     onClick={() => navigate(`/channel/${doc.id}`)}
+                  >
+                    Channel
+                  </Button>
                   {/* {date && (
                     <Typography variant="body2" color="text.secondary">
                       Date: {date}
