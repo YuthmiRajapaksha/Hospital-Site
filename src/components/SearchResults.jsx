@@ -1,3 +1,296 @@
+
+
+// import React, { useEffect, useState } from "react";
+// import { useLocation, useNavigate } from "react-router-dom";
+// import {
+//   Container,
+//   Grid,
+//   Card,
+//   CardContent,
+//   Typography,
+//   CardMedia,
+//   Paper,
+//   Button,
+// } from "@mui/material";
+
+// // 🔍 Fetch doctors based on filters
+// const fetchDoctors = async ({ name, specialization, hospital, date }) => {
+//   const query = new URLSearchParams();
+//   if (name) query.append("name", name);
+//   if (specialization) query.append("specialization", specialization);
+//   if (hospital) query.append("hospital", hospital);
+//   if (date) query.append("date", date);
+
+//   try {
+//     const res = await fetch(`http://localhost:3000/api/doctors/search?${query.toString()}`);
+//     const data = await res.json();
+
+//     if (res.ok) {
+//       return data.doctors;
+//     } else {
+//       console.error("Backend Error:", data.message);
+//       return [];
+//     }
+//   } catch (err) {
+//     console.error("Fetch Error:", err);
+//     return [];
+//   }
+// };
+
+// const SearchResults = () => {
+//   const [results, setResults] = useState([]);
+//   const location = useLocation();
+//   const navigate = useNavigate();
+
+//   // Get query parameters from URL
+//   const params = new URLSearchParams(location.search);
+//   const name = params.get("doctor");
+//   const specialization = params.get("specialization");
+//   const hospital = params.get("hospital");
+//   const date = params.get("date");
+
+//   useEffect(() => {
+//     const fetchResults = async () => {
+//       const doctors = await fetchDoctors({ name, specialization, hospital, date });
+//       setResults(doctors);
+//     };
+
+//     fetchResults();
+//   }, [name, specialization, hospital, date]);
+
+//   return (
+//     <Container sx={{ mt: 5, pb: 8 }}>
+//       <Typography
+//         variant="h4"
+//         gutterBottom
+//         sx={{ fontFamily: "Poppins", fontSize: "40px", fontWeight: "bold", mb: 5 }}
+//       >
+//         Search Results
+//       </Typography>
+
+//       {results.length === 0 ? (
+//         <Paper
+//           sx={{
+//             p: 2,
+//             textAlign: "center",
+//             fontStyle: "italic",
+//             fontWeight: "bold",
+//             color: "#808080",
+//           }}
+//         >
+//           No Matching Doctors Found.
+//         </Paper>
+//       ) : (
+//         <Grid container spacing={3}>
+//           {results.map((doc, index) => (
+//             <Grid item xs={12} sm={6} md={3} key={index}>
+//               <Card
+//                 sx={{
+//                   maxWidth: 300,
+//                   boxShadow: 8,
+//                   "&:hover": {
+//                     transform: "scale(1.03)",
+//                     boxShadow: "0 8px 30px rgba(0, 0, 0, 0.15)",
+//                   },
+//                 }}
+//               >
+//                 <CardMedia
+//                   component="img"
+//                   height="250"
+//                   image={
+//                     doc.photo ? `http://localhost:3000/${doc.photo}` : "/img/doc.png"
+//                   }
+//                   alt={doc.name}
+//                 />
+//                 <CardContent sx={{ backgroundColor: "#CFEFF1" }}>
+//                   <Typography gutterBottom variant="h6" sx={{ fontWeight: "bold" }}>
+//                     Dr. {doc.name}
+//                   </Typography>
+//                   <Typography variant="body2" color="text.secondary" gutterBottom>
+//                     Specialization: {doc.specialization}
+//                   </Typography>
+//                   {/* Show appointment hospital if available, else doctor's hospital */}
+//                   <Typography variant="body2" color="text.secondary" gutterBottom>
+//                     Hospital: {doc.appointment_hospital || doc.hospital}
+//                   </Typography>
+//                   {/* Show appointment date if available */}
+//                   <Typography variant="body2" color="text.secondary" gutterBottom>
+//                     Date: {doc.session_date ? new Date(doc.session_date).toLocaleDateString() : "N/A"}
+//                   </Typography>
+//                   {/* Show appointment time if available */}
+//                   <Typography variant="body2" color="text.secondary" gutterBottom>
+//                     Time: {doc.session_time ? doc.session_time.slice(0,5) : "N/A"}
+//                   </Typography>
+
+//                   <Button
+//                     variant="contained"
+//                     fullWidth
+//                     sx={{
+//                       mt: 2,
+//                       backgroundColor: "#2B909B",
+//                       "&:hover": { backgroundColor: "#257E85" },
+//                     }}
+//                     onClick={() => navigate(`/channel/${doc.id}`)}
+//                   >
+//                     Channel
+//                   </Button>
+//                 </CardContent>
+//               </Card>
+//             </Grid>
+//           ))}
+//         </Grid>
+//       )}
+//     </Container>
+//   );
+// };
+
+// export default SearchResults;
+
+
+// import React, { useEffect, useState } from "react";
+// import { useLocation, useNavigate } from "react-router-dom";
+// import {
+//   Container,
+//   Grid,
+//   Card,
+//   CardContent,
+//   Typography,
+//   CardMedia,
+//   Paper,
+//   Button,
+// } from "@mui/material";
+
+// // 🔍 Fetch doctors based on filters
+// const fetchDoctors = async ({ name, specialization, hospital, date }) => {
+//   const query = new URLSearchParams();
+//   if (name) query.append("name", name);
+//   if (specialization) query.append("specialization", specialization);
+//   if (hospital) query.append("hospital", hospital);
+//   if (date) query.append("date", date);
+
+//   try {
+//     const res = await fetch(`http://localhost:3000/api/doctors/search?${query.toString()}`);
+//     const data = await res.json();
+
+//     if (res.ok) {
+//       return data.doctors;
+//     } else {
+//       console.error("Backend Error:", data.message);
+//       return [];
+//     }
+//   } catch (err) {
+//     console.error("Fetch Error:", err);
+//     return [];
+//   }
+// };
+
+// const SearchResults = () => {
+//   const [results, setResults] = useState([]);
+//   const location = useLocation();
+//   const navigate = useNavigate();
+
+//   const params = new URLSearchParams(location.search);
+//   const name = params.get("doctor");
+//   const specialization = params.get("specialization");
+//   const hospital = params.get("hospital");
+//   const date = params.get("date");
+
+//   useEffect(() => {
+//     const fetchResults = async () => {
+//       const doctors = await fetchDoctors({ name, specialization, hospital, date });
+//       setResults(doctors);
+//     };
+
+//     fetchResults();
+//   }, [name, specialization, hospital, date]);
+
+//   return (
+//     <Container sx={{ mt: 5, pb: 8 }}>
+//       <Typography
+//         variant="h4"
+//         gutterBottom
+//         sx={{ fontFamily: "Poppins", fontSize: "40px", fontWeight: "bold", mb: 5 }}
+//       >
+//         Search Results
+//       </Typography>
+
+//       {results.length === 0 ? (
+//         <Paper
+//           sx={{
+//             p: 2,
+//             textAlign: "center",
+//             fontStyle: "italic",
+//             fontWeight: "bold",
+//             color: "#808080",
+//           }}
+//         >
+//           No Matching Doctors Found.
+//         </Paper>
+//       ) : (
+//         <Grid container spacing={3}>
+//           {results.map((doc, index) => (
+//             <Grid item xs={12} sm={6} md={3} key={index}>
+//               <Card
+//                 sx={{
+//                   maxWidth: 300,
+//                   boxShadow: 8,
+//                   "&:hover": {
+//                     transform: "scale(1.03)",
+//                     boxShadow: "0 8px 30px rgba(0, 0, 0, 0.15)",
+//                   },
+//                 }}
+//               >
+//                 <CardMedia
+//                   component="img"
+//                   height="250"
+//                   image={
+//                     doc.photo ? `http://localhost:3000/${doc.photo}` : "/img/doc.png"
+//                   }
+//                   alt={doc.name}
+//                 />
+//                 <CardContent sx={{ backgroundColor: "#CFEFF1" }}>
+//                   <Typography gutterBottom variant="h6" sx={{ fontWeight: "bold" }}>
+//                     Dr. {doc.name}
+//                   </Typography>
+//                   <Typography variant="body2" color="text.secondary" gutterBottom>
+//                     Specialization: {doc.specialization}
+//                   </Typography>
+//                   <Typography variant="body2" color="text.secondary" gutterBottom>
+//                     Hospital: {doc.appointment_hospital || doc.hospital}
+//                   </Typography>
+//                   <Typography variant="body2" color="text.secondary" gutterBottom>
+//                     Date: {doc.session_date ? new Date(doc.session_date).toLocaleDateString() : "N/A"}
+//                   </Typography>
+//                   <Typography variant="body2" color="text.secondary" gutterBottom>
+//                     Time: {doc.session_time ? doc.session_time.slice(0,5) : "N/A"}
+//                   </Typography>
+
+//                   <Button
+//                     variant="contained"
+//                     fullWidth
+//                     sx={{
+//                       mt: 2,
+//                       backgroundColor: "#2B909B",
+//                       "&:hover": { backgroundColor: "#257E85" },
+//                     }}
+//                     onClick={() => navigate(`/channel/${doc.id}`)}
+//                   >
+//                     Channel
+//                   </Button>
+//                 </CardContent>
+//               </Card>
+//             </Grid>
+//           ))}
+//         </Grid>
+//       )}
+//     </Container>
+//   );
+// };
+
+// export default SearchResults;
+
+
+
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -7,8 +300,8 @@ import {
   CardContent,
   Typography,
   CardMedia,
-  Paper,
   Button,
+  Paper,
 } from "@mui/material";
 
 const SearchResults = () => {
@@ -16,96 +309,122 @@ const SearchResults = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-
+  // Parse query params from URL
   const params = new URLSearchParams(location.search);
-  const doctor = params.get("doctor");
-  const specialization = params.get("specialization");
-  const hospital = params.get("hospital");
-  const date = params.get("date");
+  const name = params.get("doctor") || "";
+  const specialization = params.get("specialization") || "";
+  const hospital = params.get("hospital") || "";
+  const date = params.get("date") || "";
 
   useEffect(() => {
-    const fetchResults = async () => {
+    const fetchDoctors = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/doctors");
-        const data = await response.json();
+        const query = new URLSearchParams();
+        if (name) query.append("name", name);
+        if (specialization) query.append("specialization", specialization);
+        if (hospital) query.append("hospital", hospital);
+        if (date) query.append("date", date);
 
-        if (response.ok) {
-          const filtered = data.doctors.filter((doc) => {
-            return (
-              (!doctor || doc.name.toLowerCase().includes(doctor.toLowerCase())) &&
-              (!specialization || doc.specialization.toLowerCase().includes(specialization.toLowerCase())) &&
-              (!hospital || doc.hospital.toLowerCase().includes(hospital.toLowerCase()))
-            );
-          });
-          setResults(filtered);
+        const res = await fetch(
+          `http://localhost:3000/api/doctors/search?${query.toString()}`
+        );
+        const data = await res.json();
+
+        if (res.ok && data.doctors) {
+          setResults(data.doctors);
+        } else {
+          setResults([]);
+          console.error("Backend error or no doctors found");
         }
       } catch (error) {
-        console.error("Error fetching results:", error);
+        setResults([]);
+        console.error("Fetch error:", error);
       }
     };
 
-    fetchResults();
-  }, [doctor, specialization, hospital]);
+    fetchDoctors();
+  }, [name, specialization, hospital, date]);
 
   return (
-    <Container sx={{ mt: 5, pb: 8  }}>
-      <Typography variant="h4" gutterBottom  sx={{ fontFamily: 'Poppins' ,fontSize:"40px", fontWeight: 'bold', mb: 5}}>
+    <Container sx={{ mt: 5, pb: 8 }}>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{ fontFamily: "Poppins", fontSize: "40px", fontWeight: "bold", mb: 5 }}
+      >
         Search Results
       </Typography>
+
       {results.length === 0 ? (
-        <Paper sx={{ p: 2, textAlign: "center", fontStyle: "italic" , fontWeight: 'bold', color: "#808080" }}>No Matching Doctors Found.</Paper>
+        <Paper
+          sx={{
+            p: 2,
+            textAlign: "center",
+            fontStyle: "italic",
+            fontWeight: "bold",
+            color: "#808080",
+          }}
+        >
+          No Matching Doctors Found.
+        </Paper>
       ) : (
         <Grid container spacing={3}>
-          {results.map((doc, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
-              <Card sx={{ maxWidth: 300 ,  boxShadow: 8 ,
-                "&:hover": {
-                   transform: "scale(1.03)",
-                  // transform: "scale(1.1)",
-                  boxShadow: "0 8px 30px rgba(0, 0, 0, 0.15)",
-                },
-               }}>
-                {/* <CardMedia
+          {results.map((doc) => (
+            <Grid item xs={12} sm={6} md={4} key={doc.id}>
+              <Card
+                sx={{
+                  maxWidth: 350,
+                  boxShadow: 8,
+                  "&:hover": {
+                    transform: "scale(1.03)",
+                    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.15)",
+                  },
+                }}
+              >
+                <CardMedia
                   component="img"
                   height="250"
-                  image={doc.image || "/img/doc.png"}
+                  image={doc.photo ? `http://localhost:3000/${doc.photo}` : "/img/doc.png"}
                   alt={doc.name}
-                /> */}
-                <CardMedia
-                   component="img"
-                   height="250"
-                   image={
-                   doc.photo
-                   ? `http://localhost:3000/${doc.photo}`
-                   : "/img/doc.png"
-                  }
-                   alt={doc.name}
                 />
-
-                <CardContent sx={{ backgroundColor: '#CFEFF1' }}>
-                  <Typography gutterBottom variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+                <CardContent sx={{ backgroundColor: "#CFEFF1" }}>
+                  <Typography gutterBottom variant="h6" sx={{ fontWeight: "bold" }}>
                     Dr. {doc.name}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" color="text.secondary" gutterBottom>
                     Specialization: {doc.specialization}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Hospital: {doc.hospital}
+
+                  <Typography variant="subtitle1" sx={{ mt: 1, fontWeight: "bold" }}>
+                    Available Sessions:
                   </Typography>
 
+                  {doc.appointments && doc.appointments.length > 0 ? (
+                    doc.appointments.map((appt, idx) => (
+                      <Typography key={idx} variant="body2" color="text.secondary">
+                        {appt.hospital} —{" "}
+                        {new Date(appt.session_date).toLocaleDateString()} @{" "}
+                        {appt.session_time.slice(0, 5)}
+                      </Typography>
+                    ))
+                  ) : (
+                    <Typography variant="body2" color="text.secondary">
+                      No sessions available
+                    </Typography>
+                  )}
+
                   <Button
-                     variant="contained"
-                     fullWidth
-                     sx={{ mt: 2, backgroundColor: "#2B909B", "&:hover": { backgroundColor: "#257E85" } }}
-                     onClick={() => navigate(`/channel/${doc.id}`)}
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                      mt: 2,
+                      backgroundColor: "#2B909B",
+                      "&:hover": { backgroundColor: "#257E85" },
+                    }}
+                    onClick={() => navigate(`/channel/${doc.id}`)}
                   >
                     Channel
                   </Button>
-                  {/* {date && (
-                    <Typography variant="body2" color="text.secondary">
-                      Date: {date}
-                    </Typography>
-                  )} */}
                 </CardContent>
               </Card>
             </Grid>
@@ -117,3 +436,4 @@ const SearchResults = () => {
 };
 
 export default SearchResults;
+
