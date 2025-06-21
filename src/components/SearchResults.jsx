@@ -291,6 +291,118 @@
 
 
 
+// import React, { useEffect, useState } from "react";
+// import { useLocation, useNavigate } from "react-router-dom";
+// import {
+//   Container,
+//   Grid,
+//   Card,
+//   CardContent,
+//   Typography,
+//   Button,
+//   Paper,
+// } from "@mui/material";
+
+// const SearchResults = () => {
+//   const [results, setResults] = useState([]);
+//   const location = useLocation();
+//   const navigate = useNavigate();
+
+//   const params = new URLSearchParams(location.search);
+//   const doctorId = params.get("doctorId") || "";
+//   const hospital = params.get("hospital") || "";
+//   const sessionDate = params.get("date") || "";
+
+//   useEffect(() => {
+//     const fetchBookings = async () => {
+//       try {
+//         const query = new URLSearchParams();
+//         if (doctorId) query.append("doctorId", doctorId);
+//         if (hospital) query.append("hospital", hospital);
+//         if (sessionDate) query.append("session_date", sessionDate);
+
+//         const res = await fetch(
+//           `http://localhost:3000/api/bookingform/search?${query.toString()}`
+//         );
+
+//         const data = await res.json();
+//         if (res.ok) {
+//           setResults(data);
+//         } else {
+//           setResults([]);
+//         }
+//       } catch (error) {
+//         console.error("Error fetching:", error);
+//         setResults([]);
+//       }
+//     };
+
+//     fetchBookings();
+//   }, [doctorId, hospital, sessionDate]);
+
+//   return (
+//     <Container sx={{ mt: 5 }}>
+//       <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", mb: 5 }}>
+//         Search Results
+//       </Typography>
+
+//       {results.length === 0 ? (
+//         <Paper
+//           sx={{
+//             p: 2,
+//             textAlign: "center",
+//             fontStyle: "italic",
+//             fontWeight: "bold",
+//             color: "#808080",
+//           }}
+//         >
+//           No Matching Bookings Found.
+//         </Paper>
+//       ) : (
+//         <Grid container spacing={3}>
+//           {results.map((booking) => (
+//             <Grid item xs={12} sm={6} md={4} key={booking.id}>
+//               <Card
+//                 sx={{
+//                   maxWidth: 350,
+//                   boxShadow: 8,
+//                   "&:hover": {
+//                     transform: "scale(1.03)",
+//                     boxShadow: "0 8px 30px rgba(0, 0, 0, 0.15)",
+//                   },
+//                 }}
+//               >
+//                 <CardContent sx={{ backgroundColor: "#CFEFF1" }}>
+//                   <Typography gutterBottom variant="h6" sx={{ fontWeight: "bold" }}>
+//                     Booking ID: {booking.id}
+//                   </Typography>
+//                   <Typography variant="body2">Doctor ID: {booking.doctor_id}</Typography>
+//                   <Typography variant="body2">Hospital: {booking.hospital}</Typography>
+//                   <Typography variant="body2">
+//                     Date: {new Date(booking.session_date).toLocaleDateString()}
+//                   </Typography>
+//                   <Typography variant="body2">Time: {booking.session_time?.slice(0, 5)}</Typography>
+
+//                   <Button
+//                     fullWidth
+//                     variant="contained"
+//                     sx={{ mt: 2, backgroundColor: "#2B909B" }}
+//                     onClick={() => navigate(`/channel/${booking.doctor_id}`)}
+//                   >
+//                     Channel
+//                   </Button>
+//                 </CardContent>
+//               </Card>
+//             </Grid>
+//           ))}
+//         </Grid>
+//       )}
+//     </Container>
+//   );
+// };
+
+// export default SearchResults;
+
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -309,49 +421,45 @@ const SearchResults = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Parse query params from URL
   const params = new URLSearchParams(location.search);
-  const name = params.get("doctor") || "";
-  const specialization = params.get("specialization") || "";
+  const doctorId = params.get("doctorId") || "";
   const hospital = params.get("hospital") || "";
-  const date = params.get("date") || "";
+  const sessionDate = params.get("date") || "";
+  const specialization = params.get("specialization") || "";
+  const doctorName = params.get("doctor_name") || "";
 
   useEffect(() => {
-    const fetchDoctors = async () => {
+    const fetchBookings = async () => {
       try {
         const query = new URLSearchParams();
-        if (name) query.append("name", name);
-        if (specialization) query.append("specialization", specialization);
+        if (doctorId) query.append("doctorId", doctorId);
         if (hospital) query.append("hospital", hospital);
-        if (date) query.append("date", date);
+        if (sessionDate) query.append("session_date", sessionDate);
+        if (specialization) query.append("specialization", specialization);
+        if (doctorName) query.append("doctor_name", doctorName);
 
         const res = await fetch(
-          `http://localhost:3000/api/doctors/search?${query.toString()}`
+          `http://localhost:3000/api/bookingform/search?${query.toString()}`
         );
-        const data = await res.json();
 
-        if (res.ok && data.doctors) {
-          setResults(data.doctors);
+        const data = await res.json();
+        if (res.ok) {
+          setResults(data);
         } else {
           setResults([]);
-          console.error("Backend error or no doctors found");
         }
       } catch (error) {
+        console.error("Error fetching:", error);
         setResults([]);
-        console.error("Fetch error:", error);
       }
     };
 
-    fetchDoctors();
-  }, [name, specialization, hospital, date]);
+    fetchBookings();
+  }, [doctorId, hospital, sessionDate, specialization, doctorName]);
 
   return (
-    <Container sx={{ mt: 5, pb: 8 }}>
-      <Typography
-        variant="h4"
-        gutterBottom
-        sx={{ fontFamily: "Poppins", fontSize: "40px", fontWeight: "bold", mb: 5 }}
-      >
+    <Container sx={{ mt: 5, pb: 5 }}>
+      <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", mb: 5 }}>
         Search Results
       </Typography>
 
@@ -365,15 +473,15 @@ const SearchResults = () => {
             color: "#808080",
           }}
         >
-          No Matching Doctors Found.
+          No Matching Bookings Found.
         </Paper>
       ) : (
         <Grid container spacing={3}>
-          {results.map((doc) => (
-            <Grid item xs={12} sm={6} md={4} key={doc.id}>
+          {results.map((booking) => (
+            <Grid item xs={12} sm={6} md={4} key={booking.id}>
               <Card
                 sx={{
-                  maxWidth: 350,
+                  maxWidth: 300,
                   boxShadow: 8,
                   "&:hover": {
                     transform: "scale(1.03)",
@@ -384,44 +492,33 @@ const SearchResults = () => {
                 <CardMedia
                   component="img"
                   height="250"
-                  image={doc.photo ? `http://localhost:3000/${doc.photo}` : "/img/doc.png"}
-                  alt={doc.name}
+                  image={
+                    booking.photo
+                      ? `http://localhost:3000/${booking.photo}`
+                      : "/img/doc.png"
+                  }
+                  alt={booking.doctor_name || "Doctor"}
                 />
                 <CardContent sx={{ backgroundColor: "#CFEFF1" }}>
                   <Typography gutterBottom variant="h6" sx={{ fontWeight: "bold" }}>
-                    Dr. {doc.name}
+                    Dr. {booking.doctor_name || "Not Available"}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" gutterBottom>
-                    Specialization: {doc.specialization}
+                  <Typography variant="body2" color="text.secondary">
+                    Specialization: {booking.specialization || "Unknown"}
                   </Typography>
-
-                  <Typography variant="subtitle1" sx={{ mt: 1, fontWeight: "bold" }}>
-                    Available Sessions:
+                  <Typography variant="body2">Hospital: {booking.hospital}</Typography>
+                  <Typography variant="body2">
+                    Date: {new Date(booking.session_date).toLocaleDateString()}
                   </Typography>
-
-                  {doc.appointments && doc.appointments.length > 0 ? (
-                    doc.appointments.map((appt, idx) => (
-                      <Typography key={idx} variant="body2" color="text.secondary">
-                        {appt.hospital} —{" "}
-                        {new Date(appt.session_date).toLocaleDateString()} @{" "}
-                        {appt.session_time.slice(0, 5)}
-                      </Typography>
-                    ))
-                  ) : (
-                    <Typography variant="body2" color="text.secondary">
-                      No sessions available
-                    </Typography>
-                  )}
+                  <Typography variant="body2">
+                    Time: {booking.session_time?.slice(0, 5)}
+                  </Typography>
 
                   <Button
-                    variant="contained"
                     fullWidth
-                    sx={{
-                      mt: 2,
-                      backgroundColor: "#2B909B",
-                      "&:hover": { backgroundColor: "#257E85" },
-                    }}
-                    onClick={() => navigate(`/channel/${doc.id}`)}
+                    variant="contained"
+                    sx={{ mt: 2, backgroundColor: "#2B909B" }}
+                    onClick={() => navigate(`/channel/${booking.doctor_id}`)}
                   >
                     Channel
                   </Button>
@@ -436,4 +533,5 @@ const SearchResults = () => {
 };
 
 export default SearchResults;
+
 

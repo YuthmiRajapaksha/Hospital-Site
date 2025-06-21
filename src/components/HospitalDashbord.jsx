@@ -112,12 +112,6 @@
 // export default HospitalDashboard;
 
 
-
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import {
   Container,
@@ -128,23 +122,16 @@ import {
   Autocomplete,
   Button,
 } from "@mui/material";
-// import { createFilterOptions } from '@mui/material/Autocomplete';
 import { useNavigate } from "react-router-dom";
 
 const HospitalDashboard = () => {
   const [doctors, setDoctors] = useState([]);
   const [specializations, setSpecializations] = useState([]);
-  const [doctor, setDoctor] = useState("");
+  const [doctorId, setDoctorId] = useState("");
   const [specialization, setSpecialization] = useState("");
   const [hospital, setHospital] = useState("");
   const [date, setDate] = useState("");
   const navigate = useNavigate();
-
-  // Custom filter: only show options starting with the input
-// const filterOptions = createFilterOptions({
-//   matchFrom: "start",
-//   stringify: (option) => option,
-// });
 
   useEffect(() => {
     const fetchDoctorsAndSpecializations = async () => {
@@ -152,15 +139,15 @@ const HospitalDashboard = () => {
         const response = await fetch("http://localhost:3000/api/doctors");
         const data = await response.json();
         if (response.ok) {
-          setDoctors(data.doctors.map((doc) => doc.name));
+          setDoctors(data.doctors); // Store full doctor objects
           setSpecializations([
             ...new Set(data.doctors.map((doc) => doc.specialization)),
           ]);
         } else {
-          console.error("Error fetching data");
+          console.error("Error fetching doctors");
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Fetch error:", error);
       }
     };
 
@@ -168,13 +155,13 @@ const HospitalDashboard = () => {
   }, []);
 
   const handleSearch = () => {
-    // Navigate to /results with query parameters
     const query = new URLSearchParams({
-      doctor,
+      doctorId, // send doctor ID
       specialization,
       hospital,
       date,
     }).toString();
+
     navigate(`/results?${query}`);
   };
 
@@ -214,24 +201,28 @@ const HospitalDashboard = () => {
             CHANNEL YOUR DOCTOR
           </Typography>
           <Grid container spacing={2} justifyContent="center">
+            {/* Doctor Dropdown */}
             <Grid item xs={12} sm={3}>
               <Autocomplete
-                freeSolo
                 options={doctors}
-                value={doctor}
-                onInputChange={(e, val) => setDoctor(val)}
+                getOptionLabel={(option) => option.name || ""}
+                value={doctors.find((doc) => doc.id === doctorId) || null}
+                onChange={(e, newValue) =>
+                  setDoctorId(newValue ? newValue.id : "")
+                }
                 renderInput={(params) => (
                   <TextField {...params} label="Doctor Name" fullWidth />
                 )}
-                // filterOptions={filterOptions}
                 ListboxProps={{
                   style: {
-                    maxHeight: '100px', // Limit height
-                    overflow: 'auto',   // Enable scroll
+                    maxHeight: "100px",
+                    overflow: "auto",
                   },
                 }}
               />
             </Grid>
+
+            {/* Specialization Dropdown */}
             <Grid item xs={12} sm={3}>
               <Autocomplete
                 freeSolo
@@ -241,7 +232,6 @@ const HospitalDashboard = () => {
                 renderInput={(params) => (
                   <TextField {...params} label="Specialization" fullWidth />
                 )}
-                // filterOptions={filterOptions}
                 ListboxProps={{
                   style: {
                     maxHeight: "100px",
@@ -250,6 +240,8 @@ const HospitalDashboard = () => {
                 }}
               />
             </Grid>
+
+            {/* Hospital Branch Dropdown */}
             <Grid item xs={12} sm={3}>
               <Autocomplete
                 freeSolo
@@ -261,6 +253,8 @@ const HospitalDashboard = () => {
                 )}
               />
             </Grid>
+
+            {/* Date Picker */}
             <Grid item xs={12} sm={3}>
               <TextField
                 fullWidth
@@ -272,6 +266,8 @@ const HospitalDashboard = () => {
               />
             </Grid>
           </Grid>
+
+          {/* Search Button */}
           <Button
             variant="contained"
             onClick={handleSearch}
@@ -295,6 +291,189 @@ const HospitalDashboard = () => {
 };
 
 export default HospitalDashboard;
+
+
+
+
+
+
+// import React, { useState, useEffect } from "react";
+// import {
+//   Container,
+//   Paper,
+//   Typography,
+//   Grid,
+//   TextField,
+//   Autocomplete,
+//   Button,
+// } from "@mui/material";
+// // import { createFilterOptions } from '@mui/material/Autocomplete';
+// import { useNavigate } from "react-router-dom";
+
+// const HospitalDashboard = () => {
+//   const [doctors, setDoctors] = useState([]);
+//   const [specializations, setSpecializations] = useState([]);
+//   const [doctor, setDoctor] = useState("");
+//   const [specialization, setSpecialization] = useState("");
+//   const [hospital, setHospital] = useState("");
+//   const [date, setDate] = useState("");
+//   const navigate = useNavigate();
+
+//   // Custom filter: only show options starting with the input
+// // const filterOptions = createFilterOptions({
+// //   matchFrom: "start",
+// //   stringify: (option) => option,
+// // });
+
+//   useEffect(() => {
+//     const fetchDoctorsAndSpecializations = async () => {
+//       try {
+//         const response = await fetch("http://localhost:3000/api/doctors");
+//         const data = await response.json();
+//         if (response.ok) {
+//           setDoctors(data.doctors.map((doc) => doc.id));
+//           setSpecializations([
+//             ...new Set(data.doctors.map((doc) => doc.specialization)),
+//           ]);
+//         } else {
+//           console.error("Error fetching data");
+//         }
+//       } catch (error) {
+//         console.error("Error fetching data:", error);
+//       }
+//     };
+
+//     fetchDoctorsAndSpecializations();
+//   }, []);
+
+//   const handleSearch = () => {
+//     // Navigate to /results with query parameters
+//     const query = new URLSearchParams({
+//       doctor,
+//       specialization,
+//       hospital,
+//       date,
+//     }).toString();
+//     navigate(`/results?${query}`);
+//   };
+
+//   return (
+//     <>
+//       {/* Banner */}
+//       <div
+//         style={{
+//           width: "100%",
+//           height: "350px",
+//           background: "#f0f0f0",
+//           overflow: "hidden",
+//         }}
+//       >
+//         <img
+//           src="/img/h5.jpg"
+//           alt="Banner"
+//           style={{
+//             width: "100%",
+//             height: "350px",
+//             objectFit: "cover",
+//             display: "block",
+//             filter: "saturate(0.9)",
+//           }}
+//         />
+//       </div>
+
+//       {/* Search Form */}
+//       <Container sx={{ mt: 4, mb: 4, maxWidth: "lg" }}>
+//         <Paper elevation={10} sx={{ p: 4, textAlign: "center" }}>
+//           <Typography
+//             variant="h5"
+//             fontWeight="bold"
+//             gutterBottom
+//             sx={{ fontFamily: "Monospace" }}
+//           >
+//             CHANNEL YOUR DOCTOR
+//           </Typography>
+//           <Grid container spacing={2} justifyContent="center">
+//             <Grid item xs={12} sm={3}>
+//               <Autocomplete
+//                 freeSolo
+//                 options={doctors}
+//                 value={doctor}
+//                 onInputChange={(e, val) => setDoctor(val)}
+//                 renderInput={(params) => (
+//                   <TextField {...params} label="Doctor Name" fullWidth />
+//                 )}
+//                 // filterOptions={filterOptions}
+//                 ListboxProps={{
+//                   style: {
+//                     maxHeight: '100px', // Limit height
+//                     overflow: 'auto',   // Enable scroll
+//                   },
+//                 }}
+//               />
+//             </Grid>
+//             <Grid item xs={12} sm={3}>
+//               <Autocomplete
+//                 freeSolo
+//                 options={specializations}
+//                 value={specialization}
+//                 onInputChange={(e, val) => setSpecialization(val)}
+//                 renderInput={(params) => (
+//                   <TextField {...params} label="Specialization" fullWidth />
+//                 )}
+//                 // filterOptions={filterOptions}
+//                 ListboxProps={{
+//                   style: {
+//                     maxHeight: "100px",
+//                     overflow: "auto",
+//                   },
+//                 }}
+//               />
+//             </Grid>
+//             <Grid item xs={12} sm={3}>
+//               <Autocomplete
+//                 freeSolo
+//                 options={["Piliyandala", "Maharagama", "Gampaha"]}
+//                 value={hospital}
+//                 onInputChange={(e, val) => setHospital(val)}
+//                 renderInput={(params) => (
+//                   <TextField {...params} label="Hospital Branch" fullWidth />
+//                 )}
+//               />
+//             </Grid>
+//             <Grid item xs={12} sm={3}>
+//               <TextField
+//                 fullWidth
+//                 type="date"
+//                 label="Date"
+//                 InputLabelProps={{ shrink: true }}
+//                 value={date}
+//                 onChange={(e) => setDate(e.target.value)}
+//               />
+//             </Grid>
+//           </Grid>
+//           <Button
+//             variant="contained"
+//             onClick={handleSearch}
+//             sx={{
+//               width: "170px",
+//               backgroundColor: "#2B909B",
+//               mt: 3,
+//               fontSize: "16px",
+//               fontWeight: "bold",
+//               "&:hover": {
+//                 backgroundColor: "#4da6a9",
+//               },
+//             }}
+//           >
+//             SEARCH
+//           </Button>
+//         </Paper>
+//       </Container>
+//     </>
+//   );
+// };
+
+// export default HospitalDashboard;
 
 
 

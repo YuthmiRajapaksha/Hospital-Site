@@ -2055,7 +2055,7 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 // import { useStripe } from "@stripe/react-stripe-js";
 
 
-const countries = ["Sri Lanka", "India", "United States", "United Kingdom", "Canada", "Australia"];
+
 
 const DoctorChannel = () => {
   const { id } = useParams();
@@ -2072,12 +2072,12 @@ const DoctorChannel = () => {
   });
   const [formErrors, setFormErrors] = useState({});
 
-  const availableSessions = [
-    "2025-06-20T16:30:00",
-    "2025-06-24T16:30:00",
-    "2025-06-27T16:30:00",
-    "2025-07-01T16:30:00",
-  ];
+  // const availableSessions = [
+  //   "2025-06-20T16:30:00",
+  //   "2025-06-24T16:30:00",
+  //   "2025-06-27T16:30:00",
+  //   "2025-07-01T16:30:00",
+  // ];
 
   useEffect(() => {
     fetch(`http://localhost:3000/api/doctors/${id}`)
