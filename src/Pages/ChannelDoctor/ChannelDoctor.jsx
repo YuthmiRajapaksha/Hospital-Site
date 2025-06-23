@@ -2878,14 +2878,187 @@
 // export default DoctorChannel;
 
 
+// import React, { useEffect, useState } from "react";
+// import {
+//   Box, Typography, Button, Grid, Card, CardContent,
+//   Dialog, DialogTitle, DialogContent, DialogActions,
+//   TextField, MenuItem
+// } from "@mui/material";
+// import { useParams } from "react-router-dom";
+// import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+
+// const countries = ["Sri Lanka", "India", "UK"];
+
+// const DoctorChannel = () => {
+//   const { id } = useParams();
+//   const [doctor, setDoctor] = useState(null);
+//   const [activeAppointments, setActiveAppointments] = useState(0);
+//   const [showForm, setShowForm] = useState(false);
+//   const [step, setStep] = useState(1);
+//   const stripe = useStripe();
+//   const elements = useElements();
+//   const [charge] = useState(2500);
+//   const [formData, setFormData] = useState({
+//     patientName: "", phone: "", country: "", nic: "", email: ""
+//   });
+//   const [formErrors, setFormErrors] = useState({});
+
+//   useEffect(() => {
+//     fetch(`http://localhost:3000/api/doctors/${id}`)
+//       .then(res => res.json())
+//       .then(data => setDoctor(data.doctor));
+
+//     fetch(`http://localhost:3000/api/appointments/count/${id}`)
+//       .then(res => res.json())
+//       .then(data => setActiveAppointments(data.count));
+//   }, [id]);
+
+//   const validate = () => {
+//     const errors = {};
+//     if (!formData.patientName) errors.patientName = "Required";
+//     if (!formData.phone) errors.phone = "Required";
+//     if (!formData.country) errors.country = "Required";
+//     if (!formData.nic) errors.nic = "Required";
+//     if (!formData.email) errors.email = "Required";
+//     setFormErrors(errors);
+//     return Object.keys(errors).length === 0;
+//   };
+
+//   const handleInputChange = (field, value) => {
+//     setFormData(prev => ({ ...prev, [field]: value }));
+//     setFormErrors(prev => ({ ...prev, [field]: undefined }));
+//   };
+
+//   const handleBookingSubmit = () => {
+//     if (validate()) setStep(2);
+//   };
+
+//   const handleConfirmBooking = async () => {
+//     if (!stripe || !elements) return;
+
+//     try {
+//       const paymentRes = await fetch("http://localhost:3000/api/create-payment-intent", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ amount: charge }),
+//       });
+
+//       const { clientSecret } = await paymentRes.json();
+
+//       const result = await stripe.confirmCardPayment(clientSecret, {
+//         payment_method: {
+//           card: elements.getElement(CardElement),
+//           billing_details: {
+//             name: formData.patientName,
+//             email: formData.email,
+//           },
+//         },
+//       });
+
+//       if (result.error) {
+//         alert("❌ Payment failed: " + result.error.message);
+//         return;
+//       }
+
+//       if (result.paymentIntent.status === "succeeded") {
+//         const saveRes = await fetch("http://localhost:3000/api/appointments", {
+//           method: "POST",
+//           headers: { "Content-Type": "application/json" },
+//           body: JSON.stringify({
+//             doctorId: id,
+//             date: new Date(),
+//             ...formData,
+//             paymentId: result.paymentIntent.id,
+//           }),
+//         });
+
+//         if (saveRes.ok) {
+//           alert("✅ Appointment Booked!");
+//           setShowForm(false);
+//           setStep(1);
+//         } else {
+//           alert("❌ Booking failed after payment");
+//         }
+//       }
+//     } catch (err) {
+//       console.error(err);
+//       alert("❌ Error during booking");
+//     }
+//   };
+
+//   if (!doctor) return <div>Loading...</div>;
+
+//   return (
+//     <Box p={3}>
+//       <Typography variant="h5" mb={2}>Dr. {doctor.name} - {doctor.specialization}</Typography>
+//       <Typography variant="subtitle1" mb={2}>Active Appointments: {activeAppointments}</Typography>
+
+//       <Button variant="contained" onClick={() => setShowForm(true)}>Book</Button>
+
+//       <Dialog open={showForm} onClose={() => setShowForm(false)} fullWidth maxWidth="sm">
+//         <DialogTitle>Book Appointment</DialogTitle>
+//         <DialogContent>
+//           {step === 1 ? (
+//             <>
+//               {["patientName", "phone", "nic", "email"].map((field) => (
+//                 <TextField
+//                   key={field}
+//                   fullWidth
+//                   margin="dense"
+//                   label={field}
+//                   value={formData[field]}
+//                   onChange={(e) => handleInputChange(field, e.target.value)}
+//                   error={!!formErrors[field]}
+//                   helperText={formErrors[field]}
+//                 />
+//               ))}
+//               <TextField
+//                 select fullWidth margin="dense" label="Country"
+//                 value={formData.country}
+//                 onChange={(e) => handleInputChange("country", e.target.value)}
+//                 error={!!formErrors.country}
+//                 helperText={formErrors.country}
+//               >
+//                 {countries.map((c) => (
+//                   <MenuItem key={c} value={c}>{c}</MenuItem>
+//                 ))}
+//               </TextField>
+//             </>
+//           ) : (
+//             <>
+//               <Typography variant="subtitle1" gutterBottom>Pay LKR {charge}</Typography>
+//               <CardElement />
+//             </>
+//           )}
+//         </DialogContent>
+//         <DialogActions>
+//           {step === 1 ? (
+//             <>
+//               <Button onClick={() => setShowForm(false)}>Cancel</Button>
+//               <Button onClick={handleBookingSubmit} variant="contained" color="primary">Next</Button>
+//             </>
+//           ) : (
+//             <>
+//               <Button onClick={() => setStep(1)}>Back</Button>
+//               <Button onClick={handleConfirmBooking} variant="contained" color="success">Pay & Confirm</Button>
+//             </>
+//           )}
+//         </DialogActions>
+//       </Dialog>
+//     </Box>
+//   );
+// };
+
+// export default DoctorChannel;
+
 import React, { useEffect, useState } from "react";
 import {
-  Box, Typography, Button, Grid, Card, CardContent,
-  Dialog, DialogTitle, DialogContent, DialogActions,
-  TextField, MenuItem
+  Box, Typography, Button, Dialog, DialogTitle,
+  DialogContent, DialogActions, TextField, MenuItem
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import Swal from "sweetalert2";
 
 const countries = ["Sri Lanka", "India", "UK"];
 
@@ -2895,14 +3068,16 @@ const DoctorChannel = () => {
   const [activeAppointments, setActiveAppointments] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [step, setStep] = useState(1);
+  const [charge] = useState(2500);
   const stripe = useStripe();
   const elements = useElements();
-  const [charge] = useState(2500);
+
   const [formData, setFormData] = useState({
     patientName: "", phone: "", country: "", nic: "", email: ""
   });
   const [formErrors, setFormErrors] = useState({});
 
+  // Fetch doctor and appointment count
   useEffect(() => {
     fetch(`http://localhost:3000/api/doctors/${id}`)
       .then(res => res.json())
@@ -2940,7 +3115,7 @@ const DoctorChannel = () => {
       const paymentRes = await fetch("http://localhost:3000/api/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: charge }),
+        body: JSON.stringify({ amount: charge })
       });
 
       const { clientSecret } = await paymentRes.json();
@@ -2956,7 +3131,7 @@ const DoctorChannel = () => {
       });
 
       if (result.error) {
-        alert("❌ Payment failed: " + result.error.message);
+        Swal.fire("Payment Failed", result.error.message, "error");
         return;
       }
 
@@ -2973,16 +3148,16 @@ const DoctorChannel = () => {
         });
 
         if (saveRes.ok) {
-          alert("✅ Appointment Booked!");
+          Swal.fire("Success", "Appointment booked successfully!", "success");
           setShowForm(false);
           setStep(1);
         } else {
-          alert("❌ Booking failed after payment");
+          Swal.fire("Error", "Booking failed after payment", "error");
         }
       }
     } catch (err) {
       console.error(err);
-      alert("❌ Error during booking");
+      Swal.fire("Error", "Something went wrong", "error");
     }
   };
 
@@ -3005,7 +3180,7 @@ const DoctorChannel = () => {
                   key={field}
                   fullWidth
                   margin="dense"
-                  label={field}
+                  label={field.charAt(0).toUpperCase() + field.slice(1)}
                   value={formData[field]}
                   onChange={(e) => handleInputChange(field, e.target.value)}
                   error={!!formErrors[field]}
@@ -3050,5 +3225,6 @@ const DoctorChannel = () => {
 };
 
 export default DoctorChannel;
+
 
 
