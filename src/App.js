@@ -91,12 +91,19 @@ import About from './Pages/About';
 import Contact from './Pages/Contact';
 import SearchResults from './components/SearchResults';
 import HospitalDashboards from './Pages/ChannelDoctor/HospitalDashboards';
-import ChannelDoctorStripeWrapper from './Pages/ChannelDoctor/ChannelDoctorStripeWrapper'; // <- Stripe wrapper
+import ChannelDoctor from './Pages/ChannelDoctor/ChannelDoctor'; 
+import AuthProvider from "./context/AuthContext";// <- Stripe wrapper
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+// const stripePromise = loadStripe("pk_test_YourPublicStripeKeyHere")
+const stripePromise = loadStripe("pk_test_51RdD3U4E2Cgk4YHuTHq1rr319Bq4FzIWcmPlQuxsgfAhGdU7CWpHpaNYInsmyz9XE23w7zVtSys4Kqz0KnB5f3JR00NxnTjm1U");
 
 function App() {
   return (
+    <AuthProvider>
     <ThemeProvider theme={theme}>
       <Router>
         <div className="App">
@@ -114,13 +121,21 @@ function App() {
               <Route path="/results" element={<SearchResults />} />
 
               {/* ✅ Only this route handles payment and wraps ChannelDoctor */}
-              <Route path="/channel/:id" element={<ChannelDoctorStripeWrapper />} />
+              <Route
+  path="/channel/:id"
+  element={
+    <Elements stripe={stripePromise}>
+      <ChannelDoctor />
+    </Elements>
+  }
+/>
             </Routes>
           </div>
           <Footer />
         </div>
       </Router>
     </ThemeProvider>
+     </AuthProvider>
   );
 }
 
