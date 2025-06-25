@@ -1483,6 +1483,229 @@
 
 
 
+// import React, { useEffect, useState } from "react";
+// import { useParams, useLocation, useNavigate } from "react-router-dom";
+// import {
+//   Box, Typography, Button, Dialog, DialogTitle,
+//   DialogContent, DialogActions, TextField, MenuItem, Card, CardContent
+// } from "@mui/material";
+// import Swal from "sweetalert2";
+// import { Formik, Form } from "formik";
+// import * as Yup from "yup";
+
+// const countries = ["Sri Lanka", "India", "United States", "United Kingdom", "Canada", "Australia"];
+
+// const validationSchema = Yup.object().shape({
+//   patientName: Yup.string().required("Patient name is required"),
+//   phone: Yup.string().matches(/^\+?[0-9]{7,15}$/, "Invalid phone number").required("Phone is required"),
+//   country: Yup.string().required("Country is required"),
+//   nic: Yup.string().required("NIC is required"),
+//   email: Yup.string().email("Invalid email").required("Email is required"),
+// });
+
+// const DoctorChannel = () => {
+//   const { id } = useParams();
+//   const location = useLocation();
+//   const navigate = useNavigate();
+
+//   // Fallback from localStorage if location.state is missing
+//   const stateData = location.state || JSON.parse(localStorage.getItem("channelData")) || {};
+
+//   const { doctorName, hospital, sessionDate, sessionTime } = stateData;
+
+//   const [doctor, setDoctor] = useState(null);
+//   const [showForm, setShowForm] = useState(false);
+//   const [step, setStep] = useState(1);
+//   const [appointmentsCount, setAppointmentsCount] = useState(0);
+//   const [submittedValues, setSubmittedValues] = useState(null);
+//   const [charge] = useState(2500);
+
+//   useEffect(() => {
+//     if (!hospital || !sessionDate || !sessionTime) {
+//       Swal.fire("Missing session info", "Redirecting back to search...", "warning");
+//       return navigate("/search");
+//     }
+
+//     localStorage.setItem("channelData", JSON.stringify({ doctorName, hospital, sessionDate, sessionTime }));
+
+//     fetch(`http://localhost:3000/api/doctors/${id}`)
+//       .then((res) => res.json())
+//       .then((data) => setDoctor(data.doctor))
+//       .catch((err) => console.error("Error fetching doctor:", err));
+
+//     fetchAppointmentCount();
+//   }, [id]);
+
+//   const formatTime = (time) => (time.length === 5 ? `${time}:00` : time);
+
+//   const fetchAppointmentCount = async () => {
+//     const formattedDate = typeof sessionDate === "string"
+//       ? sessionDate
+//       : new Date(sessionDate).toISOString().split("T")[0];
+//     const formattedTime = formatTime(sessionTime);
+
+//     try {
+//       const res = await fetch(
+//         `http://localhost:3000/api/appointments/count/${id}?hospital=${encodeURIComponent(hospital)}&sessionDate=${formattedDate}&sessionTime=${formattedTime}`
+//       );
+//       const data = await res.json();
+//       setAppointmentsCount(data.count);
+//     } catch (err) {
+//       console.error("Error fetching count:", err);
+//     }
+//   };
+
+//   const handleConfirmBooking = async () => {
+//     const formattedDate = typeof sessionDate === "string"
+//       ? sessionDate
+//       : new Date(sessionDate).toISOString().split("T")[0];
+//     const formattedTime = formatTime(sessionTime);
+
+//     try {
+//       const response = await fetch("http://localhost:3000/api/appointments", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({
+//           doctorId: doctor.id,
+//           doctorName,
+//           hospital,
+//           sessionDate: formattedDate,
+//           sessionTime: formattedTime,
+//           date: new Date().toISOString().slice(0, 19).replace("T", " "),
+//           ...submittedValues,
+//           paymentId: "FAKE_PAYMENT_123",
+//         }),
+//       });
+
+//       const data = await response.json();
+//       if (!response.ok) {
+//         Swal.fire("Error", data.error || "Booking failed", "error");
+//         return;
+//       }
+
+//       Swal.fire("Success", "Appointment booked successfully!", "success");
+//       setShowForm(false);
+//       setStep(1);
+//       setSubmittedValues(null);
+//       localStorage.removeItem("channelData"); // clear session info
+//       fetchAppointmentCount(); // update counter
+//     } catch (err) {
+//       console.error("Booking error:", err);
+//       Swal.fire("Error", "Server error. Try again later.", "error");
+//     }
+//   };
+
+//   if (!doctor) return <div>Loading...</div>;
+
+//   return (
+//     <Box p={3}>
+//       <Card>
+//         <CardContent>
+//           <Typography variant="h5" gutterBottom>
+//             Dr. {doctor.name} - {doctor.specialization}
+//           </Typography>
+//           <Typography color="textSecondary" gutterBottom>
+//             Active Appointments: {appointmentsCount}/5
+//           </Typography>
+//           <Typography variant="body1" mb={2}>
+//             {doctor.notes || "No special notes available."}
+//           </Typography>
+//           <Button
+//             variant="contained"
+//             color="primary"
+//             disabled={appointmentsCount >= 5}
+//             onClick={() => setShowForm(true)}
+//           >
+//             {appointmentsCount >= 5 ? "Fully Booked" : "Book Appointment"}
+//           </Button>
+//         </CardContent>
+//       </Card>
+
+//       <Dialog
+//         open={showForm}
+//         onClose={() => {
+//           setShowForm(false);
+//           setStep(1);
+//         }}
+//         fullWidth maxWidth="sm"
+//       >
+//         <DialogTitle>Book Appointment</DialogTitle>
+//         <DialogContent>
+//           {step === 1 && (
+//             <Formik
+//               initialValues={{ patientName: "", phone: "", country: "", nic: "", email: "" }}
+//               validationSchema={validationSchema}
+//               onSubmit={(values) => {
+//                 setSubmittedValues(values);
+//                 setStep(2);
+//               }}
+//             >
+//               {({ values, handleChange, touched, errors }) => (
+//                 <Form>
+//                   <TextField label="Patient Name" name="patientName" fullWidth margin="normal"
+//                     value={values.patientName} onChange={handleChange}
+//                     error={touched.patientName && !!errors.patientName}
+//                     helperText={touched.patientName && errors.patientName} />
+//                   <TextField label="Phone" name="phone" fullWidth margin="normal"
+//                     value={values.phone} onChange={handleChange}
+//                     error={touched.phone && !!errors.phone}
+//                     helperText={touched.phone && errors.phone} />
+//                   <TextField select label="Country" name="country" fullWidth margin="normal"
+//                     value={values.country} onChange={handleChange}
+//                     error={touched.country && !!errors.country}
+//                     helperText={touched.country && errors.country}>
+//                     {countries.map((c) => <MenuItem key={c} value={c}>{c}</MenuItem>)}
+//                   </TextField>
+//                   <TextField label="NIC" name="nic" fullWidth margin="normal"
+//                     value={values.nic} onChange={handleChange}
+//                     error={touched.nic && !!errors.nic}
+//                     helperText={touched.nic && errors.nic} />
+//                   <TextField label="Email" name="email" fullWidth margin="normal"
+//                     value={values.email} onChange={handleChange}
+//                     error={touched.email && !!errors.email}
+//                     helperText={touched.email && errors.email} />
+//                   <DialogActions>
+//                     <Button onClick={() => setShowForm(false)}>Cancel</Button>
+//                     <Button type="submit" variant="contained" color="error">Next</Button>
+//                   </DialogActions>
+//                 </Form>
+//               )}
+//             </Formik>
+//           )}
+
+//           {step === 2 && submittedValues && (
+//             <>
+//               <Typography variant="h6" gutterBottom>Confirm Your Booking Details</Typography>
+//               <Typography><strong>Doctor:</strong> Dr. {doctorName}</Typography>
+//               <Typography><strong>Hospital:</strong> {hospital}</Typography>
+//               <Typography><strong>Session Date:</strong> {new Date(sessionDate).toDateString()}</Typography>
+//               <Typography><strong>Session Time:</strong> {sessionTime?.slice(0, 5)}</Typography>
+//               <Typography><strong>Patient Name:</strong> {submittedValues.patientName}</Typography>
+//               <Typography><strong>Phone:</strong> {submittedValues.phone}</Typography>
+//               <Typography><strong>Country:</strong> {submittedValues.country}</Typography>
+//               <Typography><strong>NIC:</strong> {submittedValues.nic}</Typography>
+//               <Typography><strong>Email:</strong> {submittedValues.email}</Typography>
+//               <Typography mt={2} fontWeight="bold" color="secondary">
+//                 Charge: LKR {charge.toLocaleString()}
+//               </Typography>
+//               <DialogActions>
+//                 <Button onClick={() => setStep(1)}>Back</Button>
+//                 <Button variant="contained" color="success" onClick={handleConfirmBooking}>
+//                   Confirm Payment
+//                 </Button>
+//               </DialogActions>
+//             </>
+//           )}
+//         </DialogContent>
+//       </Dialog>
+//     </Box>
+//   );
+// };
+
+// export default DoctorChannel;
+
+
+
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import {
@@ -1521,41 +1744,57 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
 });
 
+const formatTime = (time) => (time.length === 5 ? `${time}:00` : time);
+
 const DoctorChannel = () => {
   const { id } = useParams();
-  const location = useLocation(); // Use hook inside component
+  const location = useLocation();
   const { doctorName, hospital, sessionDate, sessionTime } = location.state || {};
-
-   console.log({ doctorName, hospital, sessionDate, sessionTime });
 
   const [doctor, setDoctor] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [step, setStep] = useState(1);
   const [appointmentsCount, setAppointmentsCount] = useState(0);
-  const [charge] = useState(2500); // fake charge
+  const [charge] = useState(2500);
   const [submittedValues, setSubmittedValues] = useState(null);
 
+  // Format session date & time properly
+  const formattedSessionDate = typeof sessionDate === "string"
+    ? sessionDate
+    : new Date(sessionDate).toISOString().split("T")[0];
+
+  const formattedSessionTime = formatTime(sessionTime);
+
+  // Fetch doctor details
   useEffect(() => {
     fetch(`http://localhost:3000/api/doctors/${id}`)
       .then((res) => res.json())
       .then((data) => setDoctor(data.doctor))
       .catch((err) => console.error("Error fetching doctor:", err));
-
-    fetchAppointmentCount();
   }, [id]);
 
+  // Fetch appointment count with required params
   const fetchAppointmentCount = () => {
-    fetch(`http://localhost:3000/api/appointments/count/${id}`)
+    if (!hospital || !formattedSessionDate || !formattedSessionTime) return;
+
+    fetch(
+      `http://localhost:3000/api/appointments/count/${id}?hospital=${encodeURIComponent(
+        hospital
+      )}&sessionDate=${formattedSessionDate}&sessionTime=${formattedSessionTime}`
+    )
       .then((res) => res.json())
       .then((data) => setAppointmentsCount(data.count))
       .catch((err) => console.error("Error fetching count:", err));
   };
 
+  // Refresh count on mount and after booking
+  useEffect(() => {
+    fetchAppointmentCount();
+  }, [id, hospital, formattedSessionDate, formattedSessionTime]);
+
+  // Confirm booking handler
   const handleConfirmBooking = async () => {
     try {
-     const formattedSessionDate = typeof sessionDate === "string"
-    ? sessionDate
-    : new Date(sessionDate).toISOString().split("T")[0];
       const response = await fetch("http://localhost:3000/api/appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1563,8 +1802,8 @@ const DoctorChannel = () => {
           doctorId: doctor.id,
           doctorName,
           hospital,
-          sessionDate:formattedSessionDate, 
-          sessionTime,
+          sessionDate: formattedSessionDate,
+          sessionTime: formattedSessionTime,
           date: new Date().toISOString().slice(0, 19).replace("T", " "),
           ...submittedValues,
           paymentId: "FAKE_PAYMENT_123",
@@ -1578,9 +1817,12 @@ const DoctorChannel = () => {
       }
 
       Swal.fire("Success", "Appointment booked successfully!", "success");
+
       setShowForm(false);
       setStep(1);
       setSubmittedValues(null);
+
+      // Refresh appointment count immediately
       fetchAppointmentCount();
     } catch (err) {
       console.error("Booking error:", err);
@@ -1598,7 +1840,7 @@ const DoctorChannel = () => {
             Dr. {doctor.name} - {doctor.specialization}
           </Typography>
           <Typography color="textSecondary" gutterBottom>
-            Active Appointments: {appointmentsCount}
+            Active Appointments: {appointmentsCount}/5
           </Typography>
           <Typography variant="body1" mb={2}>
             {doctor.notes || "No special notes available."}
@@ -1619,6 +1861,7 @@ const DoctorChannel = () => {
         onClose={() => {
           setShowForm(false);
           setStep(1);
+          setSubmittedValues(null);
         }}
         fullWidth
         maxWidth="sm"
@@ -1726,7 +1969,7 @@ const DoctorChannel = () => {
                 {sessionDate ? new Date(sessionDate).toDateString() : ""}
               </Typography>
               <Typography>
-                <strong>Session Time:</strong> {sessionTime?.slice(0, 5)}
+                <strong>Session Time:</strong> {formattedSessionTime}
               </Typography>
               <Typography>
                 <strong>Patient Name:</strong> {submittedValues.patientName}
@@ -1765,6 +2008,8 @@ const DoctorChannel = () => {
 };
 
 export default DoctorChannel;
+
+
 
 
 

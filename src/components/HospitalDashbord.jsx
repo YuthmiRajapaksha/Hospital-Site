@@ -218,7 +218,7 @@ const HospitalDashboard = () => {
                 ListboxProps={{ style: { maxHeight: "100px", overflow: "auto" } }}
               />
             </Grid>
-            <Grid item xs={12} sm={3}>
+            {/* <Grid item xs={12} sm={3}>
               <TextField
                 fullWidth
                 type="date"
@@ -227,7 +227,21 @@ const HospitalDashboard = () => {
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
               />
-            </Grid>
+            </Grid> */}
+     <Grid item xs={12} sm={3}>
+  <TextField
+    fullWidth
+    type="date"
+    label="Date"
+    InputLabelProps={{ shrink: true }}
+    inputProps={{
+      min: new Date().toISOString().split("T")[0], // disable past dates
+    }}
+    value={date}
+    onChange={(e) => setDate(e.target.value)}
+    onKeyDown={(e) => e.preventDefault()} // disables typing only
+  />
+</Grid>
           </Grid>
           <Button
             variant="contained"

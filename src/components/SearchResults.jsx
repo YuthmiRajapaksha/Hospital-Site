@@ -443,11 +443,23 @@ const SearchResults = () => {
         );
 
         const data = await res.json();
+        // if (res.ok) {
+        //   setResults(data);
+        // } else {
+        //   setResults([]);
+        // }
         if (res.ok) {
-          setResults(data);
-        } else {
-          setResults([]);
-        }
+  const today = new Date().setHours(0, 0, 0, 0);
+
+  const upcoming = data.filter((booking) => {
+    const bookingDate = new Date(booking.session_date).setHours(0, 0, 0, 0);
+    return bookingDate >= today;
+  });
+
+  setResults(upcoming);
+} else {
+  setResults([]);
+}
       } catch (error) {
         console.error("Error fetching:", error);
         setResults([]);
