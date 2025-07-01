@@ -92,7 +92,9 @@ import Contact from './Pages/Contact';
 import SearchResults from './components/SearchResults';
 import HospitalDashboards from './Pages/ChannelDoctor/HospitalDashboards';
 import ChannelDoctor from './Pages/ChannelDoctor/ChannelDoctor'; 
-import AuthProvider from "./context/AuthContext";// <- Stripe wrapper
+import { AuthProvider } from "./context/AuthContext";
+
+
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import { Elements } from "@stripe/react-stripe-js";
@@ -104,9 +106,10 @@ const stripePromise = loadStripe("pk_test_51RdD3U4E2Cgk4YHuTHq1rr319Bq4FzIWcmPlQ
 
 function App() {
   return (
-    <AuthProvider>
+   
     <ThemeProvider theme={theme}>
       <Router>
+         <AuthProvider>
         <div className="App">
           <Navbar />
           <div className="content">
@@ -134,9 +137,10 @@ function App() {
           </div>
           <Footer />
         </div>
+        </AuthProvider>
       </Router>
     </ThemeProvider>
-     </AuthProvider>
+    
   );
 }
 

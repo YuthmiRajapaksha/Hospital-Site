@@ -21,6 +21,7 @@
     "express": "^5.1.0",
     "formik": "^2.4.6",
     "formik-mui": "^5.0.0-alpha.1",
+    "jwt-decode": "^4.0.0",
     "material-icons": "^1.13.14",
     "mysql2": "^3.14.1",
     "react": "^19.0.0",
