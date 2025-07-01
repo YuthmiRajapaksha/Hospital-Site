@@ -130,7 +130,7 @@ const HospitalDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Get user name from localStorage
+    
     const user = JSON.parse(localStorage.getItem("user"));
     if (user?.name) {
       setUserName(user.name);
@@ -218,30 +218,21 @@ const HospitalDashboard = () => {
                 ListboxProps={{ style: { maxHeight: "100px", overflow: "auto" } }}
               />
             </Grid>
-            {/* <Grid item xs={12} sm={3}>
-              <TextField
-                fullWidth
-                type="date"
+           
+            <Grid item xs={12} sm={3}>
+               <TextField
+                 fullWidth
+                 type="date"
                 label="Date"
                 InputLabelProps={{ shrink: true }}
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-              />
-            </Grid> */}
-     <Grid item xs={12} sm={3}>
-  <TextField
-    fullWidth
-    type="date"
-    label="Date"
-    InputLabelProps={{ shrink: true }}
-    inputProps={{
-      min: new Date().toISOString().split("T")[0], // disable past dates
-    }}
-    value={date}
-    onChange={(e) => setDate(e.target.value)}
-    onKeyDown={(e) => e.preventDefault()} // disables typing only
-  />
-</Grid>
+                inputProps={{
+                min: new Date().toISOString().split("T")[0], // disable past dates
+                }}
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  onKeyDown={(e) => e.preventDefault()} // disables typing only
+                />
+            </Grid>
           </Grid>
           <Button
             variant="contained"
