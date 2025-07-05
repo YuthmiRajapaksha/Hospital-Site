@@ -130,14 +130,99 @@
 // export default Navbar;
 
 
-import React, { useContext } from 'react';
+// import React, { useContext } from 'react';
+// import { Link, useNavigate } from 'react-router-dom';
+// import { Avatar, AppBar, Toolbar, Button, Box, Typography } from "@mui/material";
+// import { AuthContext } from '../context/AuthContext';
+
+// const Navbar = () => {
+//   const { user, logout } = useContext(AuthContext); // ✅ use context
+//   const navigate = useNavigate();
+
+//   const navButtonStyle = {
+//     mx: 1,
+//     textTransform: "capitalize",
+//     fontWeight: 600,
+//     fontSize: "18px",
+//     fontFamily: 'Poppins',
+//     "&:hover": {
+//       backgroundColor: "transparent",
+//       color: "#77C2C8",
+//     },
+//   };
+
+//   const handleLogout = () => {
+//     logout();       // ✅ clear context + storage
+//     navigate("/");  // optional redirect
+//   };
+
+//   return (
+//     <AppBar position="static" color="default">
+//       <Toolbar>
+//         <Box display="flex" alignItems="center" sx={{ flexGrow: 1 }}>
+//           <img
+//             src="/img/Logo7.PNG"
+//             alt="Logo"
+//             style={{ width: "55px", height: "55px", marginRight: "10px", borderRadius: "50%", objectFit: "cover" }}
+//           />
+//           <Box display="flex" gap={1}>
+//             <Typography variant="h5" fontWeight="bold" sx={{ fontFamily: "Cursive", color: "black" }}>
+//               MediCare
+//             </Typography>
+//             <Typography variant="h6" fontWeight="bold" sx={{ fontFamily: "Cursive", color: "#2B909B" }}>
+//               Hospitals
+//             </Typography>
+//           </Box>
+//         </Box>
+
+//         {/* Always show */}
+//         <Button component={Link} to="/" color="inherit" sx={navButtonStyle}>Home</Button>
+//         <Button component={Link} to="/lab-reports" color="inherit" sx={navButtonStyle}>Lab Reports</Button>
+
+//         {/* Show only if logged in */}
+//         {user && (
+//           <Button component={Link} to="/bookings" color="inherit" sx={navButtonStyle}>My Bookings</Button>
+//         )}
+
+//         {/* Auth buttons */}
+//         {user ? (
+//           <>
+//             <Typography variant="body1" sx={{ mx: 2, fontFamily: 'Poppins' }}>
+//               Hello, <strong>{user.firstName}</strong>
+//             </Typography>
+//             <Button onClick={handleLogout} sx={navButtonStyle} color="inherit">Logout</Button>
+//           </>
+//         ) : (
+//           <Button component={Link} to="/signin" color="inherit" sx={navButtonStyle}>Sign In</Button>
+//         )}
+//       </Toolbar>
+//     </AppBar>
+//   );
+// };
+
+// export default Navbar;
+
+
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AppBar, Toolbar, Button, Box, Typography } from "@mui/material";
+import {
+  Avatar,
+  AppBar,
+  Toolbar,
+  Button,
+  Box,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem
+} from "@mui/material";
 import { AuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
-  const { user, logout } = useContext(AuthContext); // ✅ use context
+  const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const navButtonStyle = {
     mx: 1,
@@ -151,9 +236,18 @@ const Navbar = () => {
     },
   };
 
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleLogout = () => {
-    logout();       // ✅ clear context + storage
-    navigate("/");  // optional redirect
+    logout();
+    handleMenuClose();
+    navigate("/");
   };
 
   return (
@@ -163,7 +257,13 @@ const Navbar = () => {
           <img
             src="/img/Logo7.PNG"
             alt="Logo"
-            style={{ width: "55px", height: "55px", marginRight: "10px", borderRadius: "50%", objectFit: "cover" }}
+            style={{
+              width: "55px",
+              height: "55px",
+              marginRight: "10px",
+              borderRadius: "50%",
+              objectFit: "cover",
+            }}
           />
           <Box display="flex" gap={1}>
             <Typography variant="h5" fontWeight="bold" sx={{ fontFamily: "Cursive", color: "black" }}>
@@ -181,19 +281,36 @@ const Navbar = () => {
 
         {/* Show only if logged in */}
         {user && (
-          <Button component={Link} to="/bookings" color="inherit" sx={navButtonStyle}>My Bookings</Button>
+          <Button component={Link} to="/bookings" color="inherit" sx={navButtonStyle}>
+            My Bookings
+          </Button>
         )}
 
         {/* Auth buttons */}
         {user ? (
           <>
-            <Typography variant="body1" sx={{ mx: 2, fontFamily: 'Poppins' }}>
-              Hello, <strong>{user.firstName}</strong>
-            </Typography>
-            <Button onClick={handleLogout} sx={navButtonStyle} color="inherit">Logout</Button>
+            <IconButton onClick={handleMenuOpen} sx={{ mx: 2 }}>
+              <Avatar sx={{ bgcolor: "#2B909B" }}>
+                {user.firstName ? user.firstName[0] : 'U'}
+              </Avatar>
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
           </>
         ) : (
-          <Button component={Link} to="/signin" color="inherit" sx={navButtonStyle}>Sign In</Button>
+          <Button
+            component={Link}
+            to="/signin"
+            color="inherit"
+            sx={navButtonStyle}
+          >
+            Sign In
+          </Button>
         )}
       </Toolbar>
     </AppBar>
@@ -201,5 +318,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
