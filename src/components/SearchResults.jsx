@@ -544,6 +544,7 @@ const SearchResults = () => {
       hospital: booking.hospital,
       sessionDate: booking.session_date,
       sessionTime: booking.session_time,
+       bookingformId: booking.id
     },
   })}
 >
