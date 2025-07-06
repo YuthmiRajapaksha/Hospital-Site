@@ -95,7 +95,7 @@ const LabReports = () => {
       const data = await response.json();
 
       if (data && data.status) {
-        // Match known statuses to a message
+        
         let message = "";
         switch (data.status) {
           case "Completed":
@@ -130,7 +130,7 @@ const LabReports = () => {
           <Typography variant="h4" fontWeight="bold" sx={{ fontFamily: "Poppins" }}>LAB REPORTS</Typography>
           <Typography variant="h6" mt={4} sx={{ fontFamily: "Poppins" }}>Verify your lab report status here</Typography>
 
-          {/* Reference Number Input */}
+         
           <Box mt={6}>
             <TextField
               label="Reference Number"
@@ -143,7 +143,7 @@ const LabReports = () => {
             />
           </Box>
 
-          {/* ENTER Button */}
+        
           <Box mt={6}>
             <Button 
               variant="contained"  
@@ -159,17 +159,11 @@ const LabReports = () => {
             </Button>
           </Box>
 
-          {/* Popup Dialog */}
+         
           <Dialog open={open} onClose={() => setOpen(false)}>
             <DialogTitle sx={{ fontFamily: 'Poppins', fontWeight: 'bold' }}>Lab Report Status</DialogTitle>
             <DialogContent>
-              {/* {errorMessage ? (
-                <Typography>{errorMessage}</Typography>
-              ) : (
-                <Typography>
-                  {reportAvailable ? "✅ Your lab report is ready for download!" : "❌ No lab report found for this reference number."}
-                </Typography>
-              )} */}
+             
               <Typography>{reportStatusMessage}</Typography>
 
             </DialogContent>

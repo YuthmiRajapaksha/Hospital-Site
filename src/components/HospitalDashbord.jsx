@@ -112,7 +112,7 @@
 // export default HospitalDashboard;
 
 
-// src/pages/HospitalDashboard.jsx
+
 import React, { useState, useEffect } from "react";
 import {
   Container, Paper, Typography, Grid, TextField, Autocomplete, Button
@@ -165,7 +165,7 @@ const HospitalDashboard = () => {
 
   return (
     <>
-      {/* Banner */}
+      
       <div style={{ width: "100%", height: "350px", background: "#f0f0f0", overflow: "hidden" }}>
         <img
           src="/img/h5.jpg"
@@ -174,14 +174,14 @@ const HospitalDashboard = () => {
         />
       </div>
 
-      {/* Welcome Message */}
+    
       {userName && (
         <Typography variant="h6" sx={{ position: "absolute", top: 15, right: 30, color: "#2B909B", fontWeight: "bold" }}>
           Hi, {userName}! Welcome back.
         </Typography>
       )}
 
-      {/* Search Form */}
+      
       <Container sx={{ mt: 4, mb: 4, maxWidth: "lg" }}>
         <Paper elevation={10} sx={{ p: 4, textAlign: "center" }}>
           <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ fontFamily: "Monospace" }}>
@@ -230,7 +230,7 @@ const HospitalDashboard = () => {
                 }}
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  onKeyDown={(e) => e.preventDefault()} // disables typing only
+                  onKeyDown={(e) => e.preventDefault()} 
                 />
             </Grid>
           </Grid>
