@@ -2836,7 +2836,7 @@ const DoctorChannel = () => {
           date: new Date().toISOString().slice(0, 19).replace("T", " "),
           ...submittedValues,
           paymentId: "FAKE_PAYMENT_ID",
-          bookingformId: bookingformId, // ✅ LINKED!
+          bookingformId: bookingformId, 
         }),
       });
 
@@ -2859,20 +2859,36 @@ const DoctorChannel = () => {
   return (
     <Box p={3}>
       <Card>
-        <CardContent>
-          <Typography variant="h5">Dr. {doctor.name}</Typography>
-          <Typography>
-            Active Appointments: {loadingCount ? "..." : appointmentsCount} / 5
-          </Typography>
-          <Button
-            disabled={appointmentsCount >= 5}
-            variant="contained"
-            onClick={() => setShowForm(true)}
-          >
-            Book
-          </Button>
-        </CardContent>
-      </Card>
+  <CardContent>
+    <Typography variant="h5">Dr. {doctor.name}</Typography>
+
+    
+    <Typography variant="subtitle1">
+      Hospital: {hospital}
+    </Typography>
+    <Typography variant="subtitle1">
+      Date: {sessionDate}
+    </Typography>
+    <Typography variant="subtitle1">
+      Time: {sessionTime}
+    </Typography>
+
+    <Box mt={2}>
+      <Typography>
+        Active Appointments: {loadingCount ? "..." : appointmentsCount} / 5
+      </Typography>
+
+      <Button
+        disabled={appointmentsCount >= 5}
+        variant="contained"
+        onClick={() => setShowForm(true)}
+        sx={{ mt: 1 }}
+      >
+        Book Appointment
+      </Button>
+    </Box>
+  </CardContent>
+</Card>
 
       <Dialog open={showForm} onClose={() => setShowForm(false)}>
         <DialogTitle>Book Appointment</DialogTitle>
@@ -2963,27 +2979,55 @@ const DoctorChannel = () => {
           )}
 
           {step === 2 && (
-            <>
-              <Typography>Doctor: Dr. {doctorName}</Typography>
-              <Typography>Hospital: {hospital}</Typography>
-              <Typography>Date: {sessionDate}</Typography>
-              <Typography>Time: {sessionTime}</Typography>
-              <Typography>Patient: {submittedValues.patientName}</Typography>
-              <Typography>Phone: {submittedValues.phone}</Typography>
-              <Typography>NIC: {submittedValues.nic}</Typography>
-              <Typography>Email: {submittedValues.email}</Typography>
-              <DialogActions>
-                <Button onClick={() => setStep(1)}>Back</Button>
-                <Button
-                  variant="contained"
-                  onClick={handleConfirmBooking}
-                  disabled={submitting}
-                >
-                  {submitting ? "Processing..." : "Confirm Booking"}
-                </Button>
-              </DialogActions>
-            </>
-          )}
+  <>
+    <Card variant="outlined" sx={{ mb: 2 }}>
+      <CardContent>
+        <Typography variant="h6" gutterBottom>
+          Confirm Your Booking
+        </Typography>
+
+        <Typography>
+          <strong>Doctor:</strong> Dr. {doctorName}
+        </Typography>
+        <Typography>
+          <strong>Hospital:</strong> {hospital}
+        </Typography>
+        <Typography>
+          <strong>Date:</strong> {sessionDate}
+        </Typography>
+        <Typography>
+          <strong>Time:</strong> {sessionTime}
+        </Typography>
+
+        <Box mt={2}>
+          <Typography>
+            <strong>Patient:</strong> {submittedValues.patientName}
+          </Typography>
+          <Typography>
+            <strong>Phone:</strong> {submittedValues.phone}
+          </Typography>
+          <Typography>
+            <strong>NIC:</strong> {submittedValues.nic}
+          </Typography>
+          <Typography>
+            <strong>Email:</strong> {submittedValues.email}
+          </Typography>
+        </Box>
+      </CardContent>
+    </Card>
+
+    <DialogActions>
+      <Button onClick={() => setStep(1)}>Back</Button>
+      <Button
+        variant="contained"
+        onClick={handleConfirmBooking}
+        disabled={submitting}
+      >
+        {submitting ? "Processing..." : "Confirm Booking"}
+      </Button>
+    </DialogActions>
+  </>
+)}
         </DialogContent>
       </Dialog>
     </Box>

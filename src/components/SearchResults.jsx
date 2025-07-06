@@ -443,11 +443,7 @@ const SearchResults = () => {
         );
 
         const data = await res.json();
-        // if (res.ok) {
-        //   setResults(data);
-        // } else {
-        //   setResults([]);
-        // }
+       
         if (res.ok) {
   const today = new Date().setHours(0, 0, 0, 0);
 
@@ -526,14 +522,7 @@ const SearchResults = () => {
                     Time: {booking.session_time?.slice(0, 5)}
                   </Typography>
 
-                  {/* <Button
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 2, backgroundColor: "#2B909B" }}
-                    onClick={() => navigate(`/channel/${booking.doctor_id}`)}
-                  >
-                    Channel
-                  </Button> */}
+                  
       <Button
   fullWidth
   variant="contained"

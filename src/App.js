@@ -124,7 +124,7 @@ function App() {
               <Route path="/channel-doctor" element={<HospitalDashboards />} />
               <Route path="/results" element={<SearchResults />} />
 
-              {/* ✅ Only this route handles payment and wraps ChannelDoctor */}
+             
               <Route
   path="/channel/:id"
   element={

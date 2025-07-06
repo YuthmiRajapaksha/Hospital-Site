@@ -790,7 +790,7 @@
 
 
 
-// src/pages/SignIn.js
+
 import React, { useContext, useState } from "react";
 import { Box, TextField, Button, Typography, Paper } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
@@ -829,7 +829,7 @@ const SignIn = () => {
             timer: 2000,
           });
 
-          navigate("/dashboard"); // redirect after login
+          navigate("/"); 
         }
       } catch (err) {
         Swal.fire({
