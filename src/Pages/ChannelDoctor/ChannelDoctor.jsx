@@ -411,7 +411,7 @@ const DoctorChannel = () => {
   }, [id, hospital, formattedSessionDate, formattedSessionTime]);
 
   const handleConfirmBooking = async () => {
-    if (submitting) return; // ✅ Prevent accidental double submission
+    if (submitting) return; // accidental double submission
     setSubmitting(true);
     try {
       const token = localStorage.getItem("token");
