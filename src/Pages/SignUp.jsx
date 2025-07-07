@@ -915,8 +915,17 @@ const SignUp = () => {
       title: Yup.string().required("Title is required"),
       firstName: Yup.string().required("First name is required"),
       lastName: Yup.string().required("Last name is required"),
-      nic: Yup.string().required(`${idType} is required`),
-      email: Yup.string().email("Invalid email").required("Email is required"),
+      nic: Yup.string()
+    .required(`${idType} is required`)
+    .test("is-valid-nic", "Invalid NIC. Use 9 digits + V/v or 12 digits.", (value) => {
+      if (!value) return false;
+      const nineDigitPattern = /^\d{9}[vV]$/;
+      const twelveDigitPattern = /^\d{12}$/;
+      return nineDigitPattern.test(value) || twelveDigitPattern.test(value);
+    }),
+  email: Yup.string()
+    .required("Email is required")
+    .matches(/^[^\s@]+@gmail\.com$/, "Email must be a valid @gmail.com address"),
       password: Yup.string()
         .required("Password is required")
         .min(6, "Must be at least 6 characters")
