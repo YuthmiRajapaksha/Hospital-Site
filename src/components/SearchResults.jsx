@@ -502,13 +502,13 @@ const SearchResults = () => {
                   height="250"
                   image={
                     booking.photo
-                      ? `http://localhost:3000/${booking.photo}`
+                      ? `http://localhost:3000/uploads/${booking.photo}`
                       : "/img/doc.png"
                   }
                   alt={booking.doctor_name || "Doctor"}
                 />
                 <CardContent sx={{ backgroundColor: "#CFEFF1" }}>
-                  <Typography gutterBottom variant="h6" sx={{ fontWeight: "bold" }}>
+                  <Typography gutterBottom variant="h6" sx={{ fontWeight: "bold", }}>
                     Dr. {booking.doctor_name || "Not Available"}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">

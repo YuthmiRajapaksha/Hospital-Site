@@ -456,7 +456,7 @@ const DoctorChannel = () => {
     <Box p={3}>
       <Card>
         <CardContent>
-          <Typography variant="h5">Dr. {doctor.name}</Typography>
+          <Typography variant="h5"sx={{fontStyle: "italic"}}>Dr. {doctor.name}</Typography>
           <Typography variant="subtitle1">Hospital: {hospital}</Typography>
           <Typography variant="subtitle1">Date: {sessionDate}</Typography>
           <Typography variant="subtitle1">Time: {sessionTime}</Typography>
@@ -481,7 +481,7 @@ const DoctorChannel = () => {
       <Dialog
         open={showForm}
         onClose={(event, reason) => {
-          if (submitting) return; // ✅ Prevent closing while submitting
+          if (submitting) return; 
           if (reason === "backdropClick" || reason === "escapeKeyDown") return;
           setShowForm(false);
           setStep(1);
