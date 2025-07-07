@@ -106,7 +106,7 @@ const MyBookings = () => {
           <Table>
             <TableHead>
   <TableRow sx={{ backgroundColor: "#B0E0E6" }}>
-    {["Doctor", "Hospital", "Date", "Time"].map((header) => (
+    {["Doctor","Specialization", "Hospital", "Date", "Time"].map((header) => (
       <TableCell key={header} sx={{ fontWeight: "bold" }}>
         {header}
       </TableCell>
@@ -117,6 +117,7 @@ const MyBookings = () => {
               {appointments.map((appt) => (
                 <TableRow key={appt.id}>
                   <TableCell>{`Dr. ${appt.doctor_name}`}</TableCell>
+                  <TableCell>{appt.specialization}</TableCell>
                   <TableCell>{appt.hospital}</TableCell>
                   <TableCell>{appt.session_date}</TableCell>
                   <TableCell>{appt.session_time}</TableCell>
