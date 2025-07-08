@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
   const login = (userData, jwtToken) => {
     setUser(userData);
     setToken(jwtToken);
-    // The effects above will sync localStorage and axios
+    
   };
 
   const logout = () => {

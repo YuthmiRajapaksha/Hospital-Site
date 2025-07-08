@@ -125,9 +125,7 @@ function App() {
               <Route path="/results" element={<SearchResults />} />
 
              
-              <Route
-  path="/channel/:id"
-  element={
+              <Route path="/channel/:id" element={
     <Elements stripe={stripePromise}>
       <ChannelDoctor />
     </Elements>
