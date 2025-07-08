@@ -134,6 +134,108 @@
 // export default MyBookings;
 
 
+// import React, { useEffect, useState, useContext } from "react";
+// import axios from "axios";
+// import { AuthContext } from "../context/AuthContext";
+// import {
+//   Box,
+//   Typography,
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableContainer,
+//   TableHead,
+//   TableRow,
+//   Paper,
+//   Chip,
+// } from "@mui/material";
+
+// const MyBookings = () => {
+//   const { token } = useContext(AuthContext);
+//   const [appointments, setAppointments] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     if (!token) return;
+
+//     axios
+//       .get("http://localhost:3000/api/appointments/my", {
+//         headers: { Authorization: `Bearer ${token}` },
+//       })
+//       .then((res) => {
+//         setAppointments(res.data);
+//       })
+//       .catch((err) => {
+//         console.error(err);
+//       })
+//       .finally(() => setLoading(false));
+//   }, [token]);
+
+//   if (loading)
+//     return <Typography>Loading your appointments...</Typography>;
+
+//   return (
+//     <Box p={3}>
+//       <Typography
+//         variant="h4"
+//         gutterBottom
+//         sx={{ fontFamily: "Poppins", fontWeight: "bold" }}
+//       >
+//         My Bookings
+//       </Typography>
+
+//       {appointments.length === 0 ? (
+//         <Typography
+//           sx={{ fontStyle: "italic", color: "#888" }}
+//         >
+//           No appointments found.
+//         </Typography>
+//       ) : (
+//         <TableContainer component={Paper}>
+//           <Table>
+//             <TableHead>
+//               <TableRow sx={{ backgroundColor: "#B0E0E6" }}>
+//                 {[
+//                   "Doctor",
+//                   "Specialization",
+//                   "Hospital",
+//                   "Date",
+//                   "Time",
+//                   "Status",
+//                 ].map((header) => (
+//                   <TableCell key={header} sx={{ fontWeight: "bold" }}>
+//                     {header}
+//                   </TableCell>
+//                 ))}
+//               </TableRow>
+//             </TableHead>
+//             <TableBody>
+//               {appointments.map((appt) => (
+//                 <TableRow key={appt.id}>
+//                   <TableCell>{`Dr. ${appt.doctor_name}`}</TableCell>
+//                   <TableCell>{appt.specialization}</TableCell>
+//                   <TableCell>{appt.hospital}</TableCell>
+//                   <TableCell>{appt.session_date}</TableCell>
+//                   <TableCell>{appt.session_time}</TableCell>
+//                   <TableCell>
+//                     {appt.status === "cancelled" ? (
+//                       <Chip label="Cancelled" color="error" />
+//                     ) : (
+//                       <Chip label="Active" color="success" />
+//                     )}
+//                   </TableCell>
+//                 </TableRow>
+//               ))}
+//             </TableBody>
+//           </Table>
+//         </TableContainer>
+//       )}
+//     </Box>
+//   );
+// };
+
+// export default MyBookings;
+
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
@@ -148,7 +250,9 @@ import {
   TableRow,
   Paper,
   Chip,
+  IconButton,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const MyBookings = () => {
   const { token } = useContext(AuthContext);
@@ -171,6 +275,11 @@ const MyBookings = () => {
       .finally(() => setLoading(false));
   }, [token]);
 
+  // delete only from table not in database table
+  const handleHide = (id) => {
+    setAppointments((prev) => prev.filter((appt) => appt.id !== id));
+  };
+
   if (loading)
     return <Typography>Loading your appointments...</Typography>;
 
@@ -185,9 +294,7 @@ const MyBookings = () => {
       </Typography>
 
       {appointments.length === 0 ? (
-        <Typography
-          sx={{ fontStyle: "italic", color: "#888" }}
-        >
+        <Typography sx={{ fontStyle: "italic", color: "#888" }}>
           No appointments found.
         </Typography>
       ) : (
@@ -202,6 +309,7 @@ const MyBookings = () => {
                   "Date",
                   "Time",
                   "Status",
+                  "Actions",
                 ].map((header) => (
                   <TableCell key={header} sx={{ fontWeight: "bold" }}>
                     {header}
@@ -217,6 +325,7 @@ const MyBookings = () => {
                   <TableCell>{appt.hospital}</TableCell>
                   <TableCell>{appt.session_date}</TableCell>
                   <TableCell>{appt.session_time}</TableCell>
+                  
                   <TableCell>
                     {appt.status === "cancelled" ? (
                       <Chip label="Cancelled" color="error" />
@@ -224,6 +333,14 @@ const MyBookings = () => {
                       <Chip label="Active" color="success" />
                     )}
                   </TableCell>
+                  <TableCell>
+                   <IconButton
+                      color="error"
+                      onClick={() => handleHide(appt.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                    </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -235,5 +352,4 @@ const MyBookings = () => {
 };
 
 export default MyBookings;
-
 
