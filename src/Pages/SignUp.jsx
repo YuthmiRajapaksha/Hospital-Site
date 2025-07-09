@@ -146,6 +146,9 @@ const SignUp = () => {
     },
   });
 
+
+  
+
   return (
     <Box sx={{ mt: 2, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
       <Paper elevation={10} sx={{ p: 4, width: "40%", minWidth: "350px" }}>
