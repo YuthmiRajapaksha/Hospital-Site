@@ -72,7 +72,7 @@ const HospitalDashboard = () => {
       <Container sx={{ mt: 4, mb: 4, maxWidth: "lg" }}>
         <Paper elevation={10} sx={{ p: 4, textAlign: "center" }}>
           <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ fontFamily: "Monospace" }}>
-            CHANNEL YOUR DOCTOR
+            <u>CHANNEL YOUR DOCTOR</u>
           </Typography>
           <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12} sm={3}>

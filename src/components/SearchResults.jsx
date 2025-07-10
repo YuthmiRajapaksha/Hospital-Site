@@ -119,23 +119,23 @@ const SearchResults = () => {
                     Time: {booking.session_time?.slice(0, 5)}
                   </Typography>
 
-                  
-      <Button
-  fullWidth
-  variant="contained"
-  sx={{ mt: 2, backgroundColor: "#2B909B" }}
-  onClick={() => navigate(`/channel/${booking.doctor_id}`, {
-    state: {
-      doctorName: booking.doctor_name,
-      hospital: booking.hospital,
-      sessionDate: booking.session_date,
-      sessionTime: booking.session_time,
-       bookingformId: booking.id
-    },
-  })}
->
-  Channel
-</Button>
+                
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 2, backgroundColor: "#2B909B" }}
+                onClick={() => navigate(`/channel/${booking.doctor_id}`, {
+                state: {
+                 doctorName: booking.doctor_name,
+                 hospital: booking.hospital,
+                 sessionDate: booking.session_date,
+                 sessionTime: booking.session_time,
+                 bookingformId: booking.id
+                },
+                })}
+              >
+                 Channel
+              </Button>
 
                 </CardContent>
               </Card>
