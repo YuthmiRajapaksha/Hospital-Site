@@ -16,6 +16,9 @@ const HospitalDashboard = () => {
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
 
+  const isSearchDisabled = !doctorId && !specialization && !hospital && !date;
+
+
   useEffect(() => {
     
     const user = JSON.parse(localStorage.getItem("user"));
@@ -124,7 +127,9 @@ const HospitalDashboard = () => {
           <Button
             variant="contained"
             onClick={handleSearch}
-            sx={{ width: "170px", backgroundColor: "#2B909B", mt: 3, fontSize: "16px", fontWeight: "bold" }}
+            disabled={isSearchDisabled}
+            sx={{ width: "170px", backgroundColor: "#2B909B", mt: 3, fontSize: "16px", fontWeight: "bold",
+        "&:disabled": { backgroundColor: "#e0e0e0" } }}
           >
             SEARCH
           </Button>
