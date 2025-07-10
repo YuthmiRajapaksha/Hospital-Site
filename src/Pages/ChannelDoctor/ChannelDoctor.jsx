@@ -16,6 +16,7 @@ import {
   Card,
   CardContent,
   CircularProgress,
+  Divider
 } from "@mui/material";
 import Swal from "sweetalert2";
 import { Formik, Form } from "formik";
@@ -33,12 +34,18 @@ const countries = [
 const validationSchema = Yup.object().shape({
   patientName: Yup.string().required("Patient name is required"),
   phone: Yup.string()
-    .matches(/^\+?[0-9]{7,15}$/, "Invalid phone number")
+    .matches(/^[0-9]{10}$/, "Phone must be 10 digits")
     .required("Phone is required"),
   country: Yup.string().required("Country is required"),
-  nic: Yup.string().required("NIC is required"),
+  nic: Yup.string()
+    .matches(
+      /^([0-9]{9}[vV]|[0-9]{12})$/,
+      "NIC must be 9 digits + V/v or 12 digits"
+    )
+    .required("NIC is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
 });
+
 
 const DoctorChannel = () => {
   const { id } = useParams();
@@ -96,7 +103,7 @@ const DoctorChannel = () => {
   }, [id, hospital, formattedSessionDate, formattedSessionTime]);
 
   const handleConfirmBooking = async () => {
-    if (submitting) return; // accidental double submission
+    if (submitting) return;
     setSubmitting(true);
     try {
       const token = localStorage.getItem("token");
@@ -138,168 +145,234 @@ const DoctorChannel = () => {
   if (!doctor) return <Typography>Doctor not found</Typography>;
 
   return (
-    <Box p={3}>
-      <Card>
+    <Box p={3} maxWidth="600px" mx="auto">
+      <Card sx={{ p: 2, borderRadius: 2, boxShadow: 3 }}>
         <CardContent>
-          <Typography variant="h5"sx={{fontStyle: "italic"}}>Dr. {doctor.name}</Typography>
-          <Typography variant="subtitle1">Hospital: {hospital}</Typography>
-          <Typography variant="subtitle1">Date: {sessionDate}</Typography>
-          <Typography variant="subtitle1">Time: {sessionTime}</Typography>
+          <Typography variant="h5" sx={{ fontStyle: "italic", mb: 1, fontWeight:"bold" }}>
+            Dr. {doctor.name}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            <strong>Hospital:</strong> {hospital}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            <strong>Date:</strong> {sessionDate}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            <strong>Time:</strong> {sessionTime}
+          </Typography>
 
-          <Box mt={2}>
-            <Typography>
-              Active Appointments: {loadingCount ? "..." : appointmentsCount} / 5
-            </Typography>
+          <Divider sx={{ my: 2 }} />
 
-            <Button
-              disabled={appointmentsCount >= 5}
-              variant="contained"
-              onClick={() => setShowForm(true)}
-              sx={{ mt: 1 }}
-            >
-              Book Appointment
-            </Button>
-          </Box>
+          <Typography variant="body1">
+            Active Appointments:{" "}
+            <strong>{loadingCount ? "..." : appointmentsCount} / 5</strong>
+          </Typography>
+
+          <Button
+            disabled={appointmentsCount >= 5}
+            variant="contained"
+            onClick={() => setShowForm(true)}
+            sx={{ mt: 2 }}
+          >
+            Book Appointment
+          </Button>
         </CardContent>
       </Card>
 
       <Dialog
         open={showForm}
         onClose={(event, reason) => {
-          if (submitting) return; 
+          if (submitting) return;
           if (reason === "backdropClick" || reason === "escapeKeyDown") return;
           setShowForm(false);
           setStep(1);
         }}
         disableEscapeKeyDown={submitting}
       >
-        <DialogTitle>Book Appointment</DialogTitle>
-        <DialogContent>
-          {step === 1 && (
-            <Formik
-              initialValues={{
-                patientName: "",
-                phone: "",
-                country: "",
-                nic: "",
-                email: "",
-              }}
-              validationSchema={validationSchema}
-              onSubmit={(values) => {
-                setSubmittedValues(values);
-                setStep(2);
-              }}
-            >
-              {({ values, handleChange, touched, errors }) => (
-                <Form>
-                  <TextField
-                    name="patientName"
-                    label="Patient Name"
-                    value={values.patientName}
-                    onChange={handleChange}
-                    fullWidth
-                    margin="normal"
-                    error={touched.patientName && !!errors.patientName}
-                    helperText={touched.patientName && errors.patientName}
-                  />
-                  <TextField
-                    name="phone"
-                    label="Phone"
-                    value={values.phone}
-                    onChange={handleChange}
-                    fullWidth
-                    margin="normal"
-                    error={touched.phone && !!errors.phone}
-                    helperText={touched.phone && errors.phone}
-                  />
-                  <TextField
-                    select
-                    name="country"
-                    label="Country"
-                    value={values.country}
-                    onChange={handleChange}
-                    fullWidth
-                    margin="normal"
-                    error={touched.country && !!errors.country}
-                    helperText={touched.country && errors.country}
-                  >
-                    {countries.map((c) => (
-                      <MenuItem key={c} value={c}>
-                        {c}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  <TextField
-                    name="nic"
-                    label="NIC"
-                    value={values.nic}
-                    onChange={handleChange}
-                    fullWidth
-                    margin="normal"
-                    error={touched.nic && !!errors.nic}
-                    helperText={touched.nic && errors.nic}
-                  />
-                  <TextField
-                    name="email"
-                    label="Email"
-                    value={values.email}
-                    onChange={handleChange}
-                    fullWidth
-                    margin="normal"
-                    error={touched.email && !!errors.email}
-                    helperText={touched.email && errors.email}
-                  />
-                  <DialogActions>
-                    <Button onClick={() => setShowForm(false)}>Cancel</Button>
-                    <Button type="submit" variant="contained">
-                      Next
-                    </Button>
-                  </DialogActions>
-                </Form>
-              )}
-            </Formik>
-          )}
+        {/* <DialogTitle>Book Appointment</DialogTitle> */}
+<DialogContent>
+  {step === 1 && (
+    <Formik
+      initialValues={{
+        patientName: "",
+        phone: "",
+        country: "",
+        nic: "",
+        email: "",
+      }}
+      validationSchema={validationSchema}
+      onSubmit={(values) => {
+        setSubmittedValues(values);
+        setStep(2);
+      }}
+    >
+      {({ values, handleChange, touched, errors }) => (
+        <Form>
+          <TextField
+            name="patientName"
+            label="Patient Name"
+            value={values.patientName}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={touched.patientName && !!errors.patientName}
+            helperText={touched.patientName && errors.patientName}
+          />
+          <TextField
+            name="phone"
+            label="Phone"
+            value={values.phone}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={touched.phone && !!errors.phone}
+            helperText={touched.phone && errors.phone}
+          />
+          <TextField
+            select
+            name="country"
+            label="Country"
+            value={values.country}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={touched.country && !!errors.country}
+            helperText={touched.country && errors.country}
+          >
+            {countries.map((c) => (
+              <MenuItem key={c} value={c}>
+                {c}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            name="nic"
+            label="NIC"
+            value={values.nic}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={touched.nic && !!errors.nic}
+            helperText={touched.nic && errors.nic}
+          />
+          <TextField
+            name="email"
+            label="Email"
+            value={values.email}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={touched.email && !!errors.email}
+            helperText={touched.email && errors.email}
+          />
+          <DialogActions sx={{ mt: 1 }}>
+            <Button onClick={() => setShowForm(false)}>Cancel</Button>
+            <Button type="submit" variant="contained">
+              Next
+            </Button>
+          </DialogActions>
+        </Form>
+      )}
+    </Formik>
+  )}
 
-          {step === 2 && submittedValues && (
-            <>
-              <Card variant="outlined" sx={{ mb: 2 }}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    Confirm Your Booking
-                  </Typography>
+ {step === 2 && submittedValues && (
+  <>
+    <Card variant="outlined" sx={{ mb: 2 }}>
+      <CardContent>
+        <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2,textAlign: "center" }}>
+          Confirm Your Booking
+        </Typography>
 
-                  <Typography><strong>Doctor:</strong> Dr. {doctorName}</Typography>
-                  <Typography><strong>Hospital:</strong> {hospital}</Typography>
-                  <Typography><strong>Date:</strong> {sessionDate}</Typography>
-                  <Typography><strong>Time:</strong> {sessionTime}</Typography>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          flexWrap="wrap"
+          gap={4}
+        >
+          {/* Doctor Details LEFT */}
+          <Box flex="1" minWidth="200px">
+            <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 1 }}>
+              Doctor Details
+            </Typography>
 
-                  <Box mt={2}>
-                    <Typography><strong>Patient:</strong> {submittedValues.patientName}</Typography>
-                    <Typography><strong>Phone:</strong> {submittedValues.phone}</Typography>
-                    <Typography><strong>NIC:</strong> {submittedValues.nic}</Typography>
-                    <Typography><strong>Email:</strong> {submittedValues.email}</Typography>
-                  </Box>
-                </CardContent>
-              </Card>
+            <Box mt={1}>
+              <Typography sx={{ fontWeight: "bold" }}>Date:</Typography>
+              <Typography>{sessionDate}</Typography>
+            </Box>
+           <Box mt={1}>
+              <Typography sx={{ fontWeight: "bold" }}>Time:</Typography>
+              <Typography>{sessionTime}</Typography>
+            </Box>
+            <Box mt={1}>
+              <Typography sx={{ fontWeight: "bold" }}>Doctor:</Typography>
+              <Typography>Dr. {doctorName}</Typography>
+            </Box>
+            <Box mt={1}>
+              <Typography sx={{ fontWeight: "bold" }}>Hospital:</Typography>
+              <Typography>{hospital}</Typography>
+            </Box>
+          </Box>
 
-              <DialogActions>
-                <Button onClick={() => setStep(1)} disabled={submitting}>Back</Button>
-                <Button
-                  variant="contained"
-                  onClick={handleConfirmBooking}
-                  disabled={submitting}
-                >
-                  {submitting ? "Processing..." : "Confirm Booking"}
-                </Button>
-              </DialogActions>
-            </>
-          )}
-        </DialogContent>
+          {/* Patient Details RIGHT */}
+          <Box flex="1" minWidth="200px">
+            <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 1 }}>
+              Patient Details
+            </Typography>
+            <Box mt={1}>
+              <Typography sx={{ fontWeight: "bold" }}>Name:</Typography>
+              <Typography>{submittedValues.patientName}</Typography>
+            </Box>
+            <Box mt={1}>
+              <Typography sx={{ fontWeight: "bold" }}>Phone:</Typography>
+              <Typography>{submittedValues.phone}</Typography>
+            </Box>
+            <Box mt={1}>
+              <Typography sx={{ fontWeight: "bold" }}>NIC:</Typography>
+              <Typography>{submittedValues.nic}</Typography>
+            </Box>
+            <Box mt={1}>
+              <Typography sx={{ fontWeight: "bold" }}>Email:</Typography>
+              <Typography>{submittedValues.email}</Typography>
+            </Box>
+
+          
+          </Box>
+        </Box>
+
+        <Divider sx={{ my: 2 }} />
+
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+            Charge:
+          </Typography>
+          <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+            LKR 2500
+          </Typography>
+        </Box>
+      </CardContent>
+    </Card>
+
+    <DialogActions>
+      <Button sx={{width: "100px",color: "#2B909B", border: "2px solid #2B909B"}} onClick={() => setStep(1)} disabled={submitting}>Back</Button>
+      <Button
+        variant="contained"
+        onClick={handleConfirmBooking}
+        disabled={submitting}
+        sx={{backgroundColor: "#2B909B"}}
+      >
+        {submitting ? "Processing..." : "Confirm Booking"}
+      </Button>
+    </DialogActions>
+  </>
+)}
+
+</DialogContent>
+
       </Dialog>
     </Box>
   );
 };
 
 export default DoctorChannel;
-
 
