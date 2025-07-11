@@ -10,8 +10,6 @@ import SignIn from "./Pages/SignIn";
 import SignUp from "./Pages/SignUp";
 import Bookings from './Pages/Bookings';
 import LabReports from './Pages/LabReports';
-
-
 import SearchResults from './components/SearchResults';
 import HospitalDashboards from './Pages/ChannelDoctor/HospitalDashboards';
 import ChannelDoctor from './Pages/ChannelDoctor/ChannelDoctor'; 
