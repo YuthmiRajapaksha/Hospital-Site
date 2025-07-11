@@ -56,26 +56,26 @@ const MyBookings = () => {
       .finally(() => setLoading(false));
   }, [token]);
 
-  const handleHide = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't see this booking anymore!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setAppointments((prev) => prev.filter((appt) => appt.id !== id));
-        Swal.fire(
-          "Deleted!",
-          "This booking has been removed from your view.",
-          "success"
-        );
-      }
-    });
-  };
+  // const handleHide = (id) => {
+  //   Swal.fire({
+  //     title: "Are you sure?",
+  //     text: "You won't see this booking anymore!",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Yes, delete it!",
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       setAppointments((prev) => prev.filter((appt) => appt.id !== id));
+  //       Swal.fire(
+  //         "Deleted!",
+  //         "This booking has been removed from your view.",
+  //         "success"
+  //       );
+  //     }
+  //   });
+  // };
 
   if (loading) {
     return <Typography>Loading your appointments...</Typography>;
@@ -199,7 +199,7 @@ const MyBookings = () => {
                     "Date",
                     "Time",
                     "Status",
-                    "Actions",
+                   
                   ].map((header) => (
                     <TableCell key={header} sx={{ fontWeight: "bold" }}>
                       {header}
@@ -234,14 +234,7 @@ const MyBookings = () => {
                         />
                       )}
                     </TableCell>
-                    <TableCell>
-                      <IconButton
-                        color="error"
-                        onClick={() => handleHide(appt.id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
+                   
                   </TableRow>
                 ))}
               </TableBody>

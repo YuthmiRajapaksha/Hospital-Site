@@ -290,7 +290,7 @@ const DoctorChannel = () => {
           flexWrap="wrap"
           gap={4}
         >
-          {/* Doctor Details LEFT */}
+          
           <Box flex="1" minWidth="200px">
             <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 1 }}>
               Doctor Details
@@ -314,7 +314,7 @@ const DoctorChannel = () => {
             </Box>
           </Box>
 
-          {/* Patient Details RIGHT */}
+          
           <Box flex="1" minWidth="200px">
             <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 1 }}>
               Patient Details
