@@ -31,6 +31,7 @@ const MyBookings = () => {
   const { token } = useContext(AuthContext);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const [filterDoctor, setFilterDoctor] = useState("");
   const [filterHospital, setFilterHospital] = useState("");
@@ -199,6 +200,7 @@ const MyBookings = () => {
                     "Date",
                     "Time",
                     "Status",
+                    "Action"
                    
                   ].map((header) => (
                     <TableCell key={header} sx={{ fontWeight: "bold" }}>
@@ -233,6 +235,49 @@ const MyBookings = () => {
                           }}
                         />
                       )}
+                    </TableCell>
+                    <TableCell>
+                    <Button
+  variant="outlined"
+  color="error"
+  disabled={isDisabled} // ✅ disable when true
+  onClick={async () => {
+    const confirmed = await Swal.fire({
+      title: "Cancel Appointment?",
+      text: "Are you sure you want to cancel this appointment?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, cancel it",
+    });
+
+    if (confirmed.isConfirmed) {
+      const res = await fetch(
+        `http://localhost:3000/api/appointments/cancelByPatient/${appt.id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (res.ok) {
+        Swal.fire("Cancelled!", "Your appointment was cancelled.", "success");
+        setIsDisabled(true); //  disable button after success
+      } else {
+        Swal.fire("Error", "Could not cancel appointment.", "error");
+      }
+    }
+  }}
+>
+  Cancel
+</Button>
+
+
+
                     </TableCell>
                    
                   </TableRow>
