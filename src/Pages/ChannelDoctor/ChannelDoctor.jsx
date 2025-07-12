@@ -498,7 +498,18 @@ const DoctorChannel = () => {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Booking failed");
+      
+       if (!res.ok) {
+        if (res.status === 409) {
+          Swal.fire("Duplicate Booking", data.error, "warning");
+          setShowForm(false);
+          setStep(1);
+          fetchAppointmentCount();
+        } else {
+          throw new Error(data.error || "Booking failed");
+        }
+        return;
+      }
 
       Swal.fire("Success", "Appointment booked!", "success");
       setShowForm(false);
