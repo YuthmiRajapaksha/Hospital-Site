@@ -240,7 +240,7 @@ const MyBookings = () => {
                     <Button
   variant="outlined"
   color="error"
-  disabled={isDisabled} // ✅ disable when true
+  disabled={isDisabled} // disable when true
   onClick={async () => {
     const confirmed = await Swal.fire({
       title: "Cancel Appointment?",

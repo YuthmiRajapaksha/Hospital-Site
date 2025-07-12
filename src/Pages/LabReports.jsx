@@ -8,11 +8,14 @@ const LabReports = () => {
   const [loading, setLoading] = useState(false);
   const [reportStatusMessage, setReportStatusMessage] = useState("");
 
+  const [reportFileUrl, setReportFileUrl] = useState("");
+
   const isFormValid = referenceNumber.trim() !== "";
 
   const handleCheckReport = async () => {
     setLoading(true);
     setReportStatusMessage("");
+    setReportFileUrl("");
 
     try {
       const response = await fetch(`http://localhost:3000/api/lab-reports/check/${referenceNumber.trim()}`);
@@ -35,17 +38,21 @@ const LabReports = () => {
             message = `ℹ️ Status: ${data.status}`;
         }
         setReportStatusMessage(message);
-      } else {
-        setReportStatusMessage("❌ No lab report found for this reference number.");
+
+            if (data.fileUrl) {
+        setReportFileUrl(`http://localhost:3000${data.fileUrl}`);
       }
-    } catch (error) {
-      console.error("Error fetching report:", error);
-      setReportStatusMessage("❌ There was an error fetching the report.");
-    } finally {
-      setLoading(false);
-      setOpen(true);
+    } else {
+      setReportStatusMessage("❌ No lab report found for this reference number.");
     }
-  };
+  } catch (error) {
+    console.error("Error fetching report:", error);
+    setReportStatusMessage("❌ There was an error fetching the report.");
+  } finally {
+    setLoading(false);
+    setOpen(true);
+  }
+};
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
