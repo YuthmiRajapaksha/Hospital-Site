@@ -1,5 +1,4 @@
 
-
 import React from "react";
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -18,12 +17,12 @@ import { AuthProvider } from "./context/AuthContext";
 
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+// import { Elements } from "@stripe/react-stripe-js";
+// import { loadStripe } from "@stripe/stripe-js";
 
 
 // const stripePromise = loadStripe("pk_test_YourPublicStripeKeyHere")
-const stripePromise = loadStripe("pk_test_51RdD3U4E2Cgk4YHuTHq1rr319Bq4FzIWcmPlQuxsgfAhGdU7CWpHpaNYInsmyz9XE23w7zVtSys4Kqz0KnB5f3JR00NxnTjm1U");
+// const stripePromise = loadStripe("pk_test_51RdD3U4E2Cgk4YHuTHq1rr319Bq4FzIWcmPlQuxsgfAhGdU7CWpHpaNYInsmyz9XE23w7zVtSys4Kqz0KnB5f3JR00NxnTjm1U");
 
 function App() {
   return (
@@ -44,14 +43,15 @@ function App() {
              <Route path="/signup" element={<SignUp />} />
               <Route path="/channel-doctor" element={<HospitalDashboards />} />
               <Route path="/results" element={<SearchResults />} />
+              <Route path="/channel/:id" element={<ChannelDoctor />} />
 
              
-              <Route path="/channel/:id" element={
+              {/* <Route path="/channel/:id" element={
     <Elements stripe={stripePromise}>
       <ChannelDoctor />
     </Elements>
   }
-/>
+/> */}
             </Routes>
           </div>
           <Footer />
