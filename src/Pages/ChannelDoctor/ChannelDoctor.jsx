@@ -138,7 +138,7 @@ const DoctorChannel = () => {
         return;
       }
 
-      Swal.fire("Success", "Appointment booked!", "success");
+      Swal.fire("Success",`Appointment booked successfully! You are number ${data.appointmentNumber}`, "success");
       setShowForm(false);
       setStep(1);
       fetchAppointmentCount();
