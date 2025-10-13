@@ -118,6 +118,10 @@ const SearchResults = () => {
                   <Typography variant="body2">
                     Time: {booking.session_time?.slice(0, 5)}
                   </Typography>
+                  <Typography variant="body2" sx={{ fontWeight: "bold", mt: 1 }}>
+    Appointments Booked: {booking.assigned_count || 0} / {booking.max_appointments}
+  </Typography>
+
 
                 
               <Button
