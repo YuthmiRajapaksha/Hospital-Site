@@ -48,7 +48,17 @@ const DoctorChannel = () => {
   const navigate = useNavigate();
   const { state } = location;
 
-  const { doctorName, hospital, sessionDate, sessionTime, bookingformId } = state || {};
+  // const { doctorName, hospital, sessionDate, sessionTime, bookingformId } = state || {};
+  // const location = useLocation();
+const {
+  doctorName,
+  hospital,
+  sessionDate,
+  sessionTime,
+  bookingformId,
+  maxAppointments = 5, // ✅ default value (to prevent undefined)
+} = location.state || {};
+
 
   useEffect(() => {
     if (!doctorName || !hospital || !sessionDate || !sessionTime || !bookingformId) {
@@ -183,15 +193,34 @@ const DoctorChannel = () => {
 
           <Divider sx={{ my: 3 }} />
 
-          <Typography variant="body1" sx={{ mb: 2 }}>
+          {/* <Typography variant="body1" sx={{ mb: 2 }}>
             Active Appointments:{" "}
             <strong style={{ color: appointmentsCount >= 5 ? "red" : "green" }}>
-              {loadingCount ? "..." : `${appointmentsCount} / 5`}
+              {loadingCount ? "..." : `${appointmentsCount} /  {booking.max_appointments}`}
             </strong>
-          </Typography>
+          </Typography> */}
 
-          <Button
-  disabled={appointmentsCount >= 5}
+          {/* <Typography variant="body1" sx={{ mb: 2 }}>
+  Active Appointments:{" "}
+  <strong style={{ color: appointmentsCount >= 5 ? "red" : "green" }}>
+    {loadingCount
+      ? "..."
+      : `${appointmentsCount} / ${booking?.max_appointments || 0}`}
+  </strong>
+</Typography> */}
+
+<Typography variant="body1" sx={{ mb: 2 }}>
+  Active Appointments:{" "}
+  <strong style={{ color: appointmentsCount >= maxAppointments ? "red" : "green" }}>
+    {loadingCount ? "..." : `${appointmentsCount} / ${maxAppointments}`}
+  </strong>
+</Typography>
+
+
+
+          {/* <Button
+  disabled={appointmentsCount >= 5} */}
+  <Button disabled={appointmentsCount >= maxAppointments}
   variant="contained"
   onClick={() => setShowForm(true)}
   sx={{

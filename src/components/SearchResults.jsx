@@ -134,6 +134,7 @@ const SearchResults = () => {
                  hospital: booking.hospital,
                  sessionDate: booking.session_date,
                  sessionTime: booking.session_time,
+                   maxAppointments: booking.max_appointments, // ✅ add this
                  bookingformId: booking.id
                 },
                 })}
