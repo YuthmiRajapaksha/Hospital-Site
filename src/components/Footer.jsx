@@ -24,6 +24,9 @@ const Footer = () => {
       <Typography variant="body2" sx={{ fontSize: "14px", mt: 3 }}>
         📍 MediCare Hospital | 📞 +94 778585858 | ✉️ info@medicare.com
       </Typography>
+       <Typography variant="body2" sx={{ fontSize: "14px", mt: 3 }}>
+        Piliyandala | Maharagama | Gampaha
+      </Typography>
     </Box>
   );
 };
