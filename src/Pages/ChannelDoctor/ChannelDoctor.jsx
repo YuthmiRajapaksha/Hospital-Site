@@ -148,7 +148,16 @@ const {
         return;
       }
 
-      Swal.fire("Success",`Appointment booked successfully! You are number ${data.appointmentNumber}`, "success");
+      Swal.fire("Success",`Appointment booked successfully!`, "success");
+//       Swal.fire({
+//   title: "Booking Confirmed!",
+//   html: `
+//     <b>Appointment No:</b> ${response.data.appointmentNumber}<br>
+//     <b>Estimated Time:</b> ${response.data.estimatedTime}
+//   `,
+//   icon: "success",
+//   confirmButtonColor: "#2B909B",
+// });
       setShowForm(false);
       setStep(1);
       fetchAppointmentCount();
@@ -252,7 +261,7 @@ const {
         maxWidth="sm"
         fullWidth
       >
-        <DialogContent sx={{ pt: 4, pb: 3 }}>
+        {/* <DialogContent sx={{ pt: 4, pb: 3 }}>
           {step === 1 && (
             <Formik
               initialValues={{
@@ -474,7 +483,277 @@ const {
               </DialogActions>
             </>
           )}
-        </DialogContent>
+        </DialogContent> */}
+
+        <DialogContent sx={{ pt: 4, pb: 3, px: 3, bgcolor: "#f5f8fa" }}>
+  {/* Step Indicator */}
+  <Box display="flex" justifyContent="center" alignItems="center" mb={3}>
+    <Typography
+      variant="h6"
+      sx={{
+        fontWeight: "bold",
+        color: primaryColor,
+        borderBottom: `3px solid ${primaryColor}`,
+        pb: 0.5,
+      }}
+    >
+      {step === 1 ? "Step 1: Patient Information" : "Step 2: Confirm Booking"}
+    </Typography>
+  </Box>
+
+  {/* Step 1: Patient Info */}
+  {step === 1 && (
+    <Card
+      sx={{
+        borderRadius: 4,
+        boxShadow: 3,
+        p: 3,
+        backgroundColor: "white",
+        transition: "0.3s ease",
+      }}
+    >
+      <Formik
+        initialValues={{
+          patientName: "",
+          phone: "",
+          country: "",
+          nic: "",
+          email: "",
+        }}
+        validationSchema={validationSchema}
+        onSubmit={(values) => {
+          setSubmittedValues(values);
+          setStep(2);
+        }}
+      >
+        {({ values, handleChange, touched, errors }) => (
+          <Form>
+            <Box display="grid" gap={2}>
+              {[
+                { name: "patientName", label: "Patient Name", type: "text" },
+                { name: "phone", label: "Phone Number", type: "text" },
+                {
+                  name: "country",
+                  label: "Country",
+                  type: "select",
+                  options: countries,
+                },
+                { name: "nic", label: "NIC ", type: "text" },
+                { name: "email", label: "Email Address", type: "email" },
+              ].map((field) =>
+                field.type === "select" ? (
+                  <TextField
+                    key={field.name}
+                    select
+                    name={field.name}
+                    label={field.label}
+                    value={values[field.name]}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                    error={touched[field.name] && Boolean(errors[field.name])}
+                    helperText={touched[field.name] && errors[field.name]}
+                    sx={{ mt: 1 }}
+                  >
+                    {field.options.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                ) : (
+                  <TextField
+                    key={field.name}
+                    name={field.name}
+                    label={field.label}
+                    value={values[field.name]}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                    type={field.type}
+                    error={touched[field.name] && Boolean(errors[field.name])}
+                    helperText={touched[field.name] && errors[field.name]}
+                    sx={{ mt: 1 }}
+                  />
+                )
+              )}
+            </Box>
+
+            <DialogActions sx={{ mt: 3, px: 0, justifyContent: "space-between" }}>
+              <Button
+                onClick={() => setShowForm(false)}
+                disabled={submitting}
+                sx={{
+                  color: "red",
+                  fontWeight: "bold",
+                  "&:hover": { backgroundColor: "rgba(255,0,0,0.1)" },
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={submitting}
+                sx={{
+                  backgroundColor: primaryColor,
+                  "&:hover": { backgroundColor: "#237d88" },
+                  fontWeight: "bold",
+                  px: 4,
+                  borderRadius: 3,
+                }}
+              >
+                Next →
+              </Button>
+            </DialogActions>
+          </Form>
+        )}
+      </Formik>
+    </Card>
+  )}
+
+  {/* Step 2: Confirmation */}
+  {step === 2 && submittedValues && (
+    <Card
+      sx={{
+        borderRadius: 4,
+        boxShadow: 4,
+        p: 3,
+        backgroundColor: "white",
+        transition: "0.3s ease",
+      }}
+    >
+      <CardContent>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: "bold",
+            mb: 2,
+            textAlign: "center",
+            color: primaryColor,
+          }}
+        >
+          Confirm Your Booking
+        </Typography>
+
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          flexWrap="wrap"
+          gap={4}
+        >
+          <Box flex="1" minWidth="220px">
+            <Typography
+              variant="subtitle1"
+              sx={{
+                fontWeight: "bold",
+                mb: 1,
+                borderBottom: `2px solid ${primaryColor}`,
+                pb: 1,
+              }}
+            >
+              Doctor Details
+            </Typography>
+            <Typography>
+              <strong>Date:</strong> {sessionDate}
+            </Typography>
+            <Typography>
+              <strong>Time:</strong> {sessionTime}
+            </Typography>
+            <Typography>
+              <strong>Doctor:</strong> Dr. {doctorName}
+            </Typography>
+            <Typography>
+              <strong>Hospital:</strong> {hospital}
+            </Typography>
+          </Box>
+
+          <Box flex="1" minWidth="220px">
+            <Typography
+              variant="subtitle1"
+              sx={{
+                fontWeight: "bold",
+                mb: 1,
+                borderBottom: `2px solid ${primaryColor}`,
+                pb: 1,
+              }}
+            >
+              Patient Details
+            </Typography>
+            <Typography>
+              <strong>Name:</strong> {submittedValues.patientName}
+            </Typography>
+            <Typography>
+              <strong>Phone:</strong> {submittedValues.phone}
+            </Typography>
+            <Typography>
+              <strong>NIC:</strong> {submittedValues.nic}
+            </Typography>
+            <Typography>
+              <strong>Email:</strong> {submittedValues.email}
+            </Typography>
+          </Box>
+        </Box>
+
+        <Divider sx={{ my: 3 }} />
+
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{
+            backgroundColor: "#eef9fa",
+            borderRadius: 2,
+            p: 2,
+            mb: 2,
+          }}
+        >
+          <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+            Total Charge:
+          </Typography>
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: "bold", color: primaryColor }}
+          >
+            LKR 2,500.00
+          </Typography>
+        </Box>
+
+        <DialogActions>
+          <Button
+            sx={{
+              width: "120px",
+              color: primaryColor,
+              border: `2px solid ${primaryColor}`,
+              fontWeight: "bold",
+              borderRadius: 3,
+              "&:hover": { backgroundColor: "#d1e7eb" },
+            }}
+            onClick={() => setStep(1)}
+            disabled={submitting}
+          >
+            ← Back
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleConfirmBooking}
+            disabled={submitting}
+            sx={{
+              backgroundColor: primaryColor,
+              px: 4,
+              fontWeight: "bold",
+              borderRadius: 3,
+              "&:hover": { backgroundColor: "#237d88" },
+            }}
+          >
+            {submitting ? "Processing..." : "Confirm Booking"}
+          </Button>
+        </DialogActions>
+      </CardContent>
+    </Card>
+  )}
+</DialogContent>
+
       </Dialog>
     </Box>
   );
