@@ -22,8 +22,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { AuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
-  const { user, logout } = useContext(AuthContext);
+  // const { user, logout } = useContext(AuthContext);
+  const { auth, logout } = useContext(AuthContext);
+
+
   const navigate = useNavigate();
+
+  const user = auth?.user || auth?.doctor;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -146,16 +151,49 @@ const Navbar = () => {
               <>
                 <IconButton onClick={handleMenuOpen} sx={{ mx: 2 }}>
                   <Avatar sx={{ bgcolor: "#2B909B" }}>
-                    {user.firstName ? user.firstName[0] : 'U'}
+                    {/* {user.firstName ? user.firstName[0] : 'U'} */}
+                    {user?.firstName?.[0] || user?.name?.[0] || 'U'}
+
                   </Avatar>
                 </IconButton>
-                <Menu
+                {/* <Menu
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
                   onClose={handleMenuClose}
                 >
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                </Menu>
+                </Menu> */}
+                <Menu
+  anchorEl={anchorEl}
+  open={Boolean(anchorEl)}
+  onClose={handleMenuClose}
+>
+  <Box px={3} py={2} minWidth={220} textAlign="center">
+
+    <Typography fontWeight="bold">
+      {user?.firstName || user?.name || "User"}
+    </Typography>
+
+    <Typography variant="body2" color="text.secondary">
+      {user?.email}
+    </Typography>
+
+    {/* <Typography variant="caption" color="primary">
+      {auth?.role?.toUpperCase()}
+    </Typography> */}
+   <Typography variant="caption" color="primary">
+  {auth?.role?.toUpperCase() || "USER"}
+</Typography>
+
+
+
+  </Box>
+
+  <MenuItem onClick={handleLogout}>
+    Logout
+  </MenuItem>
+</Menu>
+
               </>
             ) : (
               <Button
