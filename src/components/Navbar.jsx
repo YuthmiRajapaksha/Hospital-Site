@@ -76,13 +76,13 @@ const Navbar = () => {
       <Toolbar>
         <Box display="flex" alignItems="center" sx={{ flexGrow: 1 }}>
           <img
-            src="/img/Logo7.PNG"
+            src="/img/New_Logo.PNG"
             alt="Logo"
             style={{
               width: "55px",
               height: "55px",
               marginRight: "10px",
-              borderRadius: "50%",
+              // borderRadius: "50%",
               objectFit: "cover",
             }}
           />

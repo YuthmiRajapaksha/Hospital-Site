@@ -472,7 +472,7 @@ const SignIn = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background: "linear-gradient(120deg, #2B909B, #77C8C6)",
+        // background: "linear-gradient(120deg, #2B909B, #77C8C6)",
       }}
     >
       <Paper elevation={10} sx={{ p: 4, width: 400, borderRadius: 3 }}>
