@@ -1781,6 +1781,8 @@ const DoctorChannel = () => {
     setSubmitting(true);
     try {
       const token = localStorage.getItem("token");
+      const user = JSON.parse(localStorage.getItem("user")); // ✅ ADD THIS
+
       const res = await fetch("http://localhost:3000/api/appointments", {
         method: "POST",
         headers: {
@@ -1797,6 +1799,7 @@ const DoctorChannel = () => {
           ...submittedValues,
           paymentId: "FAKE_PAYMENT_ID",
           bookingformId,
+          userId: user?.id, // ✅ safe access
         }),
       });
 

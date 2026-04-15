@@ -755,27 +755,52 @@ const SignUp = () => {
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
 
   // STEP 1 → SEND OTP
+  // const sendOtpToEmail = async () => {
+  //   try {
+  //     await axios.post("http://localhost:3000/api/send-otp", {
+  //       email: formik.values.email
+  //     });
+
+  //     Swal.fire({
+  //       icon: "success",
+  //       title: "OTP Sent!",
+  //       text: "A 6-digit OTP has been sent to your email.",
+  //       confirmButtonColor: "#2B909B",
+  //     });
+
+  //     setActiveStep(1);
+  //   } catch (error) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Failed to Send OTP",
+  //       text: "Please try again.",
+  //       confirmButtonColor: "#2B909B",
+  //     });
+  //   }
+  // };
+
+
+    // =========================
+  // SEND OTP (CHECK DUPLICATE FIRST)
+  // =========================
   const sendOtpToEmail = async () => {
     try {
+      // await axios.post("http://localhost:3000/api/check-email", {
+      //   email: formik.values.email,
+      // });
+
       await axios.post("http://localhost:3000/api/send-otp", {
-        email: formik.values.email
+        email: formik.values.email,
       });
 
-      Swal.fire({
-        icon: "success",
-        title: "OTP Sent!",
-        text: "A 6-digit OTP has been sent to your email.",
-        confirmButtonColor: "#2B909B",
-      });
-
+      Swal.fire("OTP Sent", "Check your email", "success");
       setActiveStep(1);
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Failed to Send OTP",
-        text: "Please try again.",
-        confirmButtonColor: "#2B909B",
-      });
+      Swal.fire(
+        "Error",
+        error.response?.data?.message || "Email already exists",
+        "error"
+      );
     }
   };
 
@@ -835,7 +860,10 @@ const SignUp = () => {
       firstName: Yup.string().required("First name is required"),
       lastName: Yup.string().required("Last name is required"),
       nic: Yup.string().required("NIC/Passport required"),
-      email: Yup.string().required("Email is required"),
+      // email: Yup.string().required("Email is required"),
+      email: Yup.string()
+  .email("Invalid email format")
+  .required("Email is required"),
       password: Yup.string().required("Password is required"),
       confirmPassword: Yup.string()
         .oneOf([Yup.ref("password"), null], "Passwords must match")
@@ -978,7 +1006,7 @@ const SignUp = () => {
                 }}
               />
 
-              <TextField
+              {/* <TextField
                 fullWidth
                 label="Confirm Password"
                 type={showConfirmPassword ? "text" : "password"}
@@ -986,7 +1014,26 @@ const SignUp = () => {
                 value={formik.values.confirmPassword}
                 onChange={formik.handleChange}
                 sx={{ mt: 2 }}
-              />
+              /> */}
+
+              <TextField
+  fullWidth
+  label="Confirm Password"
+  type={showConfirmPassword ? "text" : "password"}
+  name="confirmPassword"
+  value={formik.values.confirmPassword}
+  onChange={formik.handleChange}
+  sx={{ mt: 2 }}
+  InputProps={{
+    endAdornment: (
+      <InputAdornment position="end">
+        <IconButton onClick={toggleConfirmPasswordVisibility}>
+          {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+        </IconButton>
+      </InputAdornment>
+    ),
+  }}
+/>
 
               <Box display="flex" justifyContent="space-between" mt={3}>
                 <Button variant="outlined" onClick={handleBack}>Back</Button>

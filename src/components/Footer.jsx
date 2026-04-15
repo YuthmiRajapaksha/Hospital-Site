@@ -2,9 +2,9 @@ import { Typography, Box, Link, Stack } from "@mui/material";
 
 const Footer = () => {
   return (
-    <Box sx={{ bgcolor: "#77C2C8", py: 2, textAlign: "center", mt: 4 ,padding: "50px"}}>
+    <Box sx={{ bgcolor: "#77C2C8", py: 2, textAlign: "center", mt: 2 ,padding: "50px"}}>
       <Typography variant="body2" sx={{ fontSize: "30px", fontWeight: "bold" }}>
-        MediCare
+        MediCare Hospital
       </Typography>
       <Typography variant="body2" sx={{ fontSize: "18px",mt:2, color: "gray" }}>
         &copy; {new Date().getFullYear()} MediCare Hospital Site. All Rights Reserved.

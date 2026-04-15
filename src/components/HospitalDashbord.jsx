@@ -70,7 +70,7 @@ const HospitalDashboard = () => {
       )}
 
       
-      <Container sx={{ mt: 4, mb: 4, maxWidth: "lg" }}>
+      <Container sx={{ mt: 4, mb: 4, maxWidth: "lg"}}>
         <Paper elevation={10} sx={{ p: 4, textAlign: "center" }}>
           <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ fontFamily: "Monospace" }}>
             <u>CHANNEL YOUR DOCTOR</u>
@@ -127,7 +127,7 @@ const HospitalDashboard = () => {
             onClick={handleSearch}
             disabled={isSearchDisabled}
             sx={{ width: "170px", backgroundColor: "#2B909B", mt: 3, fontSize: "16px", fontWeight: "bold",
-        "&:disabled": { backgroundColor: "#e0e0e0" } }}
+        "&:disabled": { backgroundColor: "#e0e0e0",  } }}
           >
             SEARCH
           </Button>
