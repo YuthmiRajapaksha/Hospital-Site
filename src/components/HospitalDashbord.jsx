@@ -70,11 +70,21 @@ const HospitalDashboard = () => {
       )}
 
       
-      <Container sx={{ mt: 4, mb: 4, maxWidth: "lg"}}>
-        <Paper elevation={10} sx={{ p: 4, textAlign: "center" }}>
+      <Container sx={{ mt: 4, mb: 4, maxWidth: "lg",}}>
+
+        <Paper elevation={10} sx={{ p: 4, textAlign: "center", boxShadow: `
+            -8px 0px 20px rgba(0,0,0,0.08), 
+            8px 0px 20px rgba(0,0,0,0.08), 
+            0px 10px 25px rgba(0,0,0,0.12)
+            `,
+           borderRadius: 3 }}>
+
           <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ fontFamily: "Monospace" }}>
+
             <u>CHANNEL YOUR DOCTOR</u>
+
           </Typography>
+
           <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12} sm={3}>
               <Autocomplete
