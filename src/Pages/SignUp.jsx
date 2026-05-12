@@ -902,7 +902,7 @@ const SignUp = () => {
   });
 
   return (
-    <Box sx={{ mt: 2, display: "flex", flexDirection: "column", alignItems: "center", minHeight: "100vh" }}>
+    <Box sx={{ mt: 2, display: "flex", flexDirection: "column", alignItems: "center", minHeight: "100vh",  background: "linear-gradient(135deg, #e0f2f1, #f8fafc)", }}>
       <Paper elevation={10} sx={{ p: 4, width: "40%", minWidth: "350px" }}>
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label, idx) => (
@@ -913,7 +913,7 @@ const SignUp = () => {
         {/* STEP 1 — ENTER EMAIL */}
         {activeStep === 0 && (
           <Box mt={4} textAlign="center">
-            <Typography variant="h4" fontWeight="bold">SIGN UP</Typography>
+            <Typography variant="h5" fontWeight="bold">SIGN UP</Typography>
             <Typography variant="body1" mt={2}>Enter your Email</Typography>
 
             <TextField

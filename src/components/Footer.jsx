@@ -6,9 +6,7 @@ const Footer = () => {
       <Typography variant="body2" sx={{ fontSize: "30px", fontWeight: "bold" }}>
         MediCare Hospital
       </Typography>
-      <Typography variant="body2" sx={{ fontSize: "18px",mt:2, color: "gray" }}>
-        &copy; {new Date().getFullYear()} MediCare Hospital Site. All Rights Reserved.
-      </Typography>
+      
       <Stack direction="row" justifyContent="center" spacing={2} sx={{ mt: 3 }}>
         <Link href="#" color="inherit" sx={{ fontSize: "14px" }}>
           Privacy Policy
@@ -26,6 +24,10 @@ const Footer = () => {
       </Typography>
        <Typography variant="body2" sx={{ fontSize: "14px", mt: 3 }}>
         Piliyandala | Maharagama | Gampaha
+      </Typography>
+
+      <Typography variant="body2" sx={{ fontSize: "15px",mt:2, color: "gray" }}>
+        &copy; {new Date().getFullYear()} MediCare Hospital Site. All Rights Reserved.
       </Typography>
     </Box>
   );

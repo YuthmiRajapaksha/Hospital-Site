@@ -136,7 +136,7 @@ const HospitalDashboard = () => {
             variant="contained"
             onClick={handleSearch}
             disabled={isSearchDisabled}
-            sx={{ width: "170px", backgroundColor: "#2B909B", mt: 3, fontSize: "16px", fontWeight: "bold",
+            sx={{ width: "170px", backgroundColor: "#   ", mt: 3, fontSize: "16px", fontWeight: "bold",
         "&:disabled": { backgroundColor: "#e0e0e0",  } }}
           >
             SEARCH

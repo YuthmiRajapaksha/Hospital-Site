@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AuthContext } from '../context/AuthContext';
+import ChangePassword from "../Pages/ChangePassword";
 
 const Navbar = () => {
   // const { user, logout } = useContext(AuthContext);
@@ -90,7 +91,7 @@ const Navbar = () => {
             <Typography variant="h5" fontWeight="bold" sx={{ fontFamily: "Cursive", color: "black" }}>
               MediCare
             </Typography>
-            <Typography variant="h6" fontWeight="bold" sx={{ fontFamily: "Cursive", color: "#2B909B" }}>
+            <Typography variant="h6" fontWeight="bold" sx={{ fontFamily: "Cursive", color: "#1b1b1b" }}>
               Hospitals
             </Typography>
           </Box>
@@ -163,7 +164,9 @@ const Navbar = () => {
                 >
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu> */}
-                <Menu
+
+                
+                {/* <Menu
   anchorEl={anchorEl}
   open={Boolean(anchorEl)}
   onClose={handleMenuClose}
@@ -176,18 +179,70 @@ const Navbar = () => {
 
     <Typography variant="body2" color="text.secondary">
       {user?.email}
-    </Typography>
+    </Typography> */}
 
     {/* <Typography variant="caption" color="primary">
       {auth?.role?.toUpperCase()}
     </Typography> */}
-   <Typography variant="caption" color="primary">
+   {/* <Typography variant="caption" color="primary">
   {auth?.role?.toUpperCase() || "USER"}
 </Typography>
 
 
 
   </Box>
+
+  <MenuItem onClick={handleLogout}>
+    Logout
+  </MenuItem>
+</Menu> */}
+
+
+<Menu
+  anchorEl={anchorEl}
+  open={Boolean(anchorEl)}
+  onClose={handleMenuClose}
+>
+  <Box px={3} py={2} minWidth={220} textAlign="center">
+    <Typography fontWeight="bold">
+      {user?.firstName || user?.name || "User"}
+    </Typography>
+
+    <Typography variant="body2" color="text.secondary">
+      {user?.email}
+    </Typography>
+
+    <Typography variant="caption" color="primary">
+      {auth?.role?.toUpperCase() || "USER"}
+    </Typography>
+  </Box>
+
+  <MenuItem
+    onClick={() => {
+      navigate("/profile");
+      handleMenuClose();
+    }}
+  >
+    Profile
+  </MenuItem>
+
+  {/* <MenuItem
+    onClick={() => {
+      navigate("/settings");
+      handleMenuClose();
+    }}
+  >
+    Settings
+  </MenuItem> */}
+
+  <MenuItem
+    onClick={() => {
+      navigate("/change-password");
+      handleMenuClose();
+    }}
+  >
+    Change Password
+  </MenuItem>
 
   <MenuItem onClick={handleLogout}>
     Logout

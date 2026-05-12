@@ -449,10 +449,26 @@ const LabReports = () => {
         alignItems: "center",
         flexDirection: "column",
         textAlign: "center",
-        // background: "linear-gradient(135deg, #e0f2f1, #f8fafc)",
+        background: "linear-gradient(135deg, #e0f2f1, #f8fafc)",
         px: 2,
       }}
     >
+
+      <Box
+    sx={{
+      width: "100%",
+      maxWidth: 500,
+      p: 5,
+      borderRadius: "10px",
+      background: "#ffffff",
+      boxShadow: "0 20px 50px rgba(0,0,0,0.08)",
+      textAlign: "center",
+      transition: "0.3s",
+      "&:hover": {
+        boxShadow: "0 25px 60px rgba(0,0,0,0.12)",
+      },
+    }}
+  >
       
       {/* TITLE */}
       <Typography
@@ -476,7 +492,7 @@ const LabReports = () => {
       </Typography>
 
       {/* INPUT LINE */}
-      <Box sx={{ width: "100%", maxWidth: 400 }}>
+      <Box sx={{ width: "100%", maxWidth: 480 }}>
         <input
           type="text"
           placeholder="Enter Reference Number"
@@ -508,22 +524,25 @@ const LabReports = () => {
           variant="contained"
           onClick={handleCheckReport}
           disabled={!isFormValid || loading}
-          sx={{
-            background: "linear-gradient(135deg, #2B909B, #38bdf8)",
-            px: 5,
-            py: 1.5,
-            borderRadius: "30px",
-            fontWeight: 600,
-            fontColor: "White",
-            textTransform: "none",
-            boxShadow: "0 10px 25px rgba(43,144,155,0.3)",
-            "&:hover": {
-              background: "linear-gradient(135deg, #1f6f78, #2B909B)",
-              transform: "scale(1.05)",
-            },
-          }}
+          // sx={{
+          //   background: "linear-gradient(135deg, #2B909B, #38bdf8)",
+          //   px: 5,
+          //   py: 1.5,
+          //   borderRadius: "30px",
+          //   fontWeight: 600,
+          //   fontColor: "White",
+          //   textTransform: "none",
+          //   boxShadow: "0 10px 25px rgba(43,144,155,0.3)",
+          //   "&:hover": {
+          //     background: "linear-gradient(135deg, #1f6f78, #2B909B)",
+          //     transform: "scale(1.05)",
+          //   },
+          // }}
+           sx={{ width: "200px", backgroundColor: "#2B909B", mt: 3, fontSize: "13px", fontWeight: "bold",
+        "&:disabled": { backgroundColor: "#e0e0e0",  } }}
+          
         >
-          {loading ? "Checking..." : "Check Report"}
+          {loading ? "Checking..." : "🔍 Check Report"}
         </Button>
       </Box>
 
@@ -612,6 +631,9 @@ const LabReports = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+
+       </Box>
     </Box>
   );
 };

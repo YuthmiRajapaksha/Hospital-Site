@@ -473,10 +473,11 @@ const SignIn = () => {
         justifyContent: "center",
         alignItems: "center",
         // background: "linear-gradient(120deg, #2B909B, #77C8C6)",
+         background: "linear-gradient(135deg, #e0f2f1, #f8fafc)",
       }}
     >
-      <Paper elevation={10} sx={{ p: 4, width: 400, borderRadius: 3 }}>
-        <Typography variant="h4" textAlign="center" fontWeight="bold">
+      <Paper elevation={3} sx={{ p: 4, width: 400, borderRadius: 3 }}>
+        <Typography variant="h5" textAlign="center" fontWeight="bold">
           SIGN IN
         </Typography>
 
@@ -516,7 +517,7 @@ const SignIn = () => {
           />
 
           {/* Remember Me */}
-          <FormControlLabel
+          {/* <FormControlLabel
             control={
               <Checkbox
                 checked={rememberMe}
@@ -526,7 +527,22 @@ const SignIn = () => {
             }
             label="Remember me"
             sx={{ mt: 1 }}
-          />
+          /> */}
+
+
+          <Box sx={{ width: "100%", textAlign: "left" }}>
+  <FormControlLabel
+    control={
+      <Checkbox
+        checked={rememberMe}
+        onChange={(e) => setRememberMe(e.target.checked)}
+        color="primary"
+      />
+    }
+    label="Remember me"
+    sx={{ mt: 1 }}
+  />
+</Box>
 
           {/* LOGIN BUTTON */}
           <Button
