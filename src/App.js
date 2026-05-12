@@ -13,6 +13,7 @@ import SearchResults from './components/SearchResults';
 import HospitalDashboards from './Pages/ChannelDoctor/HospitalDashboards';
 import ChannelDoctor from './Pages/ChannelDoctor/ChannelDoctor'; 
 import { AuthProvider } from "./context/AuthContext";
+import ChangePassword from "./Pages/ChangePassword";
 
 
 import { ThemeProvider } from "@mui/material/styles";
@@ -44,6 +45,8 @@ function App() {
               <Route path="/channel-doctor" element={<HospitalDashboards />} />
               <Route path="/results" element={<SearchResults />} />
               <Route path="/channel/:id" element={<ChannelDoctor />} />
+
+              <Route path="/change-password" element={<ChangePassword />} />
 
              
               {/* <Route path="/channel/:id" element={
