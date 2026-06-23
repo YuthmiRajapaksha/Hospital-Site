@@ -42,9 +42,12 @@ const Navbar = () => {
     fontWeight: 600,
     fontSize: "18px",
     fontFamily: 'Poppins',
+    color: "#2B909B",
     "&:hover": {
       backgroundColor: "transparent",
-      color: "#77C2C8",
+      color: "#fcfcfc",
+      boxShadow: 'none',
+    backgroundColor: '#2B909B',
     },
   };
 
@@ -77,24 +80,24 @@ const Navbar = () => {
       <Toolbar>
         <Box display="flex" alignItems="center" sx={{ flexGrow: 1 }}>
           <img
-            src="/img/New_Logo.PNG"
+            src="/img/mc.png"
             alt="Logo"
             style={{
-              width: "55px",
+              width: "200px",
               height: "55px",
               marginRight: "10px",
               // borderRadius: "50%",
               objectFit: "cover",
             }}
           />
-          <Box display="flex" gap={1}>
+          {/* <Box display="flex" gap={1}>
             <Typography variant="h5" fontWeight="bold" sx={{ fontFamily: "Cursive", color: "black" }}>
               MediCare
             </Typography>
             <Typography variant="h6" fontWeight="bold" sx={{ fontFamily: "Cursive", color: "#1b1b1b" }}>
               Hospitals
             </Typography>
-          </Box>
+          </Box> */}
         </Box>
 
         {isMobile ? (
