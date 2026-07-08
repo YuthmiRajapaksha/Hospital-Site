@@ -392,7 +392,7 @@ const SignIn = () => {
       timer: 2000,
     });
 
-    navigate("/dashboard");
+    navigate("/");
 
   } catch (error) {
     Swal.fire({
