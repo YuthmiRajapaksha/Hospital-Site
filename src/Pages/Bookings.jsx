@@ -26,6 +26,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import Swal from "sweetalert2";
+import Tooltip from "@mui/material/Tooltip";
 
 const MyBookings = () => {
   // const { token } = useContext(AuthContext);
@@ -194,6 +195,23 @@ useEffect(() => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0); // Reset to first page
   };
+
+
+
+  const isCancelDisabled = (appointment) => {
+  const appointmentDateTime = new Date(
+    `${appointment.session_date}T${appointment.session_time.substring(0,5)}`
+  );
+
+  const now = new Date();
+
+  const diffInMilliseconds = appointmentDateTime - now;
+
+  const diffInHours = diffInMilliseconds / (1000 * 60 * 60);
+
+  // Disable cancel when less than or equal to 2 hours remaining
+  return diffInHours <= 2;
+};
 
   return (
     <Box p={3}>
@@ -405,11 +423,24 @@ useEffect(() => {
                       )}
                     </TableCell>
                     <TableCell>
+                      <Tooltip
+  title={
+    isCancelDisabled(appt)
+      ? "Cancellation is not allowed within 2 hours of the appointment"
+      : "Cancel appointment"
+  }
+>
+
+
                     <Button
   variant="outlined"
   color="error"
   // disabled={isDisabled} // disable when true
-  disabled={disabledButtons.includes(appt.id)}
+  // disabled={disabledButtons.includes(appt.id)}
+  disabled={
+  disabledButtons.includes(appt.id) ||
+  isCancelDisabled(appt)
+}
   onClick={async () => {
     const confirmed = await Swal.fire({
       title: "Cancel Appointment?",
@@ -456,7 +487,7 @@ useEffect(() => {
 >
   Cancel
 </Button>
-
+</Tooltip>
 
 
                     </TableCell>
